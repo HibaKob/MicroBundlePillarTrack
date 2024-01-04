@@ -1,5 +1,4 @@
 # Microbundle Pillar Tracking Repository
-MicroBundlePillarTrack
 
 <!---
 We will configure these once we make the repository public:
