@@ -1,4 +1,4 @@
-# Microbundle Pillar Tracking Repository
+# Microbundle Pillar Track Repository
 
 <!---
 We will configure these once we make the repository public:
@@ -72,7 +72,7 @@ Looking forward, we are particularly interested in expanding our dataset and per
 Specifically, we aim to `1)` identify scenarios where our approach fails, `2)` accomodate these cases if possible, and `3)` identify and extract additional useful quantitative outputs. We will continue to update this repository as the project progresses.
 
 ## Installation Instructions <a name="install"></a>
-### Get a copy of the microbundle compute repository on your local machine
+### Get a copy of the microbundle pillar track repository on your local machine
 
 The best way to do this is to create a GitHub account and ``clone`` the repository. However, you can also download the repository by clicking the green ``Code`` button and selecting ``Download ZIP``. Download and unzip the ``MicroBundlePillarTrack-main`` folder and place it in a convenient location on your computer.
 
