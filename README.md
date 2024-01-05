@@ -63,7 +63,7 @@ We are also adding new functionalities to the code as well as enhancing the soft
 ## Project Roadmap <a name="roadmap"></a>
 In alignment with our long-term goal for developing open-source software for data curation and analysis from mainly brightfield movies of beating cardiac microbundles grown on different experimental constructs, we share here a tool for automated pillar analysis based on the validated [MicroBundleCompute](https://github.com/HibaKob/MicroBundleCompute) software. 
 
-At this point (**January 2024**), we have tested our code on approximately 700 examples provided by 2 different labs who implement different techniques. This allowed us to identify challenging examples for the software and improve our approach. We hope to further expand both our testing dataset and list of contributors.
+At this point (**January 2024**), we have tested our code on approximately 700 examples provided by 2 different labs who implement different techniques. This allowed us to identify challenging examples for the software and improve our approach. We hope to further expand both our testing dataset and list of contributors. We share the complete dataset and provide more details about it on [Dryad](provide_link_here){UPDATE LINK}.  
 
 Specifically, through this collaborative endeavor we plan to proceed with the following roadmap:
 `Preliminary Dataset + Software` $\mapsto$ `Published Software Package and Tutorial` $\mapsto$ `Preliminary Analysis of the Results` $\mapsto$ `Larger Dataset + Software Testing` $\mapsto$ `Statistical Model of Tissue Mechanical Behavior`
@@ -72,6 +72,64 @@ Looking forward, we are particularly interested in expanding our dataset and per
 Specifically, we aim to `1)` identify scenarios where our approach fails, `2)` accomodate these cases if possible, and `3)` identify and extract additional useful quantitative outputs. We will continue to update this repository as the project progresses.
 
 ## Installation Instructions <a name="install"></a>
+### Get a copy of the microbundle compute repository on your local machine
+
+The best way to do this is to create a GitHub account and ``clone`` the repository. However, you can also download the repository by clicking the green ``Code`` button and selecting ``Download ZIP``. Download and unzip the ``MicroBundlePillarTrack-main`` folder and place it in a convenient location on your computer.
+
+Alternatively, you can run the following command in a ``Terminal`` session:
+```bash
+git clone https://github.com/HibaKob/MicroBundlePillarTrack.git
+```
+Following this step, ``MicroBundlePillarTrack`` folder will be downloaded in your ``Terminal`` directory. 
+
+### Create and activate a conda virtual environment
+
+1. Install [Anaconda](https://docs.anaconda.com/anaconda/install/) on your local machine.
+2. Open a ``Terminal`` session (or equivalent) -- note that Mac computers come with ``Terminal`` pre-installed (type ``⌘-space`` and then search for ``Terminal``).
+3. Type in the terminal to create a virtual environment with conda:
+```bash
+conda create --name microbundle-pillar-track-env python=3.9.13
+```
+4. Type in the terminal to activate your virtual environment:
+```bash
+conda activate microbundle-pillar-track-env
+```
+5. Check to make sure that the correct version of python is running (should be ``3.9.13``)
+```bash
+python --version
+```
+6. Update some base modules (just in case)
+```bash
+pip install --upgrade pip setuptools wheel
+```
+
+Note that once you have created this virtual environment you can ``activate`` and ``deactivate`` it in the future -- it is not necessary to create a new virtual environment each time you want to run this code, you can simply type ``conda activate microbundle-pillar-track-env`` and then pick up where you left off (see also: [conda cheat sheet](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf)).
+
+
+### Install microbundle pillar track
+
+1. Use a ``Terminal`` session to navigate to the ``MicroBundlePillarTrack-main`` folder or ``MicroBundlePillarTrack`` folder (depending on the method you followed to download the github repository). The command ``cd`` will allow you to do this (see: [terminal cheat sheet](https://terminalcheatsheet.com/))
+2. Type the command ``ls`` and make sure that the file ``pyproject.toml`` is in the current directory.
+3. Now, create an editable install of microbundle compute:
+```bash
+pip install -e .
+```
+4. If you would like to see what packages were installed, you can type ``pip list``
+5. You can test that the code is working with pytest (all tests should pass):
+```bash
+pytest -v --cov=microbunlepillartrack  --cov-report term-missing
+```
+6. To run the code from the terminal, simply start python (type ``python``) and then type ``from microbundlepillartrack import image_analysis as ia``. For example:
+```bash
+(microbundle-pillar-track-env) hibakobeissi@Hibas-MacBook-Pro ~ % python
+Python 3.9.13 (main, Oct 13 2022, 16:12:19) 
+[Clang 12.0.0 ] :: Anaconda, Inc. on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from microbundlepillartrack import image_analysis as ia
+>>> ia.hello_microbundle_pillar_track()
+'Hello World!'
+>>> 
+```
 
 ## Tutorial <a name="tutorial"></a>
 
