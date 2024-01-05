@@ -61,18 +61,15 @@ As with MicroBundleCompute, MicroBundlePillarTrack requires two main inputs: 1) 
 We are also adding new functionalities to the code as well as enhancing the software based on user feedback. Please check our [to-do list]((#todo)).
 
 ## Project Roadmap <a name="roadmap"></a>
-In alignment with our long-term goal for developing open-source software for extracting mechanical information from mainly brightfield movies of beating cardiac microbundles (check [MicroBundleCompute](https://github.com/HibaKob/MicroBundleCompute) repository),   
+In alignment with our long-term goal for developing open-source software for data curation and analysis from mainly brightfield movies of beating cardiac microbundles grown on different experimental constructs, we share here a tool for automated pillar analysis based on the validated [MicroBundleCompute](https://github.com/HibaKob/MicroBundleCompute) software. 
 
-MicroBundleCompute, 
-The ultimate goal of this project is to develop and disseminate a comprehensive software for data curation and analysis from lab-grown cardiac microbundle on different experimental constructs. 
+At this point (**January 2024**), we have tested our code on approximately 700 examples provided by 2 different labs who implement different techniques. This allowed us to identify challenging examples for the software and improve our approach. We hope to further expand both our testing dataset and list of contributors.
 
-Prior to the initial dissemination of the current version, we have tested our code on approximately 700 examples provided by 2 different labs who implement different techniques. This allowed us to identify challenging examples for the software and improve our approach. We hope to further expand both our testing dataset and list of contributors.
-The roadmap for this collaborative endeavor is as follows:
+Specifically, through this collaborative endeavor we plan to proceed with the following roadmap:
+`Preliminary Dataset + Software` $\mapsto$ `Published Software Package and Tutorial` $\mapsto$ `Preliminary Analysis of the Results` $\mapsto$ `Larger Dataset + Software Testing` $\mapsto$ `Statistical Model of Tissue Mechanical Behavior`
 
-`Preliminary Dataset + Software` $\mapsto$ `Published Software Package` $\mapsto$ `Published Validation Examples and Tutorial` $\mapsto$ `Larger Dataset + Software Testing and Validation` $\mapsto$ `Automated Analysis of High-Throughput Experiments`
-
-At present (**may 2023**), we have validated our software on a preliminary dataset in addition to a synthetically generated dataset (please find more details on the [SyntheticMicroBundle github page](https://github.com/HibaKob/SyntheticMicroBundle) and the [main manuscript](**add link**)). We also include details on validation against manual tracking [here](**add link to SA**). In the next stage, we are particularly interested in expanding our dataset and performing further software validation and testing. 
- Specifically, we aim to `1)` identify scenarios where our approach fails, `2)` create functions to accomodate these cases, and `3)` compare software results to previous manual approaches for extracting quantitative information, especially for pillar tracking. We will continue to update this repository as the project progresses.
+Looking forward, we are particularly interested in expanding our dataset and performing further software testing. 
+Specifically, we aim to `1)` identify scenarios where our approach fails, `2)` accomodate these cases if possible, and `3)` identify and extract additional useful quantitative outputs. We will continue to update this repository as the project progresses.
 
 ## Installation Instructions <a name="install"></a>
 
