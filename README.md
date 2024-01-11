@@ -134,6 +134,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 ## Tutorial <a name="tutorial"></a>
 We include within this repository a ``tutorials`` folder containing and a single example folder, 2 python scripts for running the code in single file mode or in batch mode, a python script to convert ``.tif`` image sequence files to individual ``.TIF`` frames, and a python script to convert the software outputs saved as individual text files into a single ``.csv`` file . To run the tutorial, change your curent working directory to the ``tutorials`` folder.
 
+### Data preparation
 The data (frames to be tracked) will be contained in the ``movie`` folder. Critically:
 1. The files must have a ``.TIF`` extension.
 2. The files can have any name, but in order for the code to work properly they must be *in order*. For reference, we use ``sort`` to order file names. By default, this function sorts strings (such as file names) alphabetically and numbers numerically. Below are examples of good and bad file naming practices. 
@@ -160,20 +161,26 @@ Type "help", "copyright", "credits" or "license" for more information.
 ```
 
 3. The provided ``tif_sequence_to_TIFF_frames.py`` script can be used to prepare a batch of ``.tif`` image sequence files into the format accepted by ``MicroBundlePillarTrack``. To use the script, the data should be saved in a folder having the following original structure. As a side note, the ``files`` folder can have multiple ``.tif`` files but we include here a single example due to file size restrictions on GitHub. 
-
+ <a name="data_prep"></a>
 ```bash
 |___ files
         |___"tutorial_example.tif"
 ```
-To run the provided script, simply do the following in a terminal running python, where the variable ``PATH_TO_Files`` is your local path to the ``files`` folder in this example: 
+
+To run the provided script, simply do the following in a terminal running python, where the variable ``input_folder`` is a [``PosixPath``](https://docs.python.org/3/library/pathlib.html) that specifies the relative path between where the code is being run (for example the provided ``tutorials`` folder) and the ``files`` folder that contains the ``.tif`` files to be analyzed, as defined [above](#data_prep).
+
+
 ```bash
 (microbundle-pillar-track-env) hibakobeissi@Hibas-MacBook-Pro tutorials % python
 Python 3.9.13 (main, Oct 13 2022, 16:12:19) 
 [Clang 12.0.0 ] :: Anaconda, Inc. on darwin
 Type "help", "copyright", "credits" or "license" for more information.
->>> import tif_sequence_to_TIFF_frames as stf
->>> stf.tif_to_TIFF_frames('PATH_TO_Files')
-[PosixPath('PATH_TO_Files/tutorial_example')]
+>>> from pathlib import Path
+>>> import tif_sequence_to_TIFF_frames as tsf
+>>> input_folder = Path('PATH_TO_FILES')
+>>> tsf.tif_to_TIFF_frames(input_folder)
+[PosixPath('PATH_TO_FILES/tutorial_example')]
+>>> 
 ```
 
 After running ``tif_sequence_to_TIFF_frames.py``, the folder structure should be similar to the example below, which is also the initial folder structure required for the pillar tracking code to work properly.
@@ -190,7 +197,8 @@ Aside from the folder structure, the code requires that the frames in the ``movi
 ### Current core functionalities
 In the current version of the code, there are 3 core functionalities available for pillar tracking (automatic mask generation, tracking, and results visualization). As a brief note, it is not necessary to use all functionalities (e.g., you can still provide an externally generated mask and skip the automatic mask generation step or skip the visualization step).
 
- To be able to run the code, we stress that for the code snippets in this section, the variable ``input_folder`` is a [``PosixPath``](https://docs.python.org/3/library/pathlib.html) that specifies the relative path between where the code is being run (for example the provided ``tutorials`` folder) and the ``example_folder`` defined [above](#data_prep) that the user wishes to analyze.
+ To be able to run the code, we stress that for the code snippets in this section, the variable ``input_folder`` is a [``PosixPath``] as defined [above](#data_prep) that the user wishes to analyze.
+ 
 ## Comparison to Available Tools <a name="comparison"></a>
 
 ## To-Do List <a name="todo"></a>
