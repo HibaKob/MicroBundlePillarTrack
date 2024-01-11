@@ -161,11 +161,30 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 3. The provided ``tif_sequence_to_TIFF_frames.py`` script can be used to prepare a batch of ``.tif`` image sequence files into the format accepted by ``MicroBundlePillarTrack``. To use the script, the data should have the following original structure. 
 
+```bash
+|___ files
+        |___"tutorial_example.tif"
+```
+To run the provided script, simply do the following in a terminal running python: 
+```bash
+(microbundle-pillar-track-env) hibakobeissi@Hibas-MacBook-Pro tutorials % python
+Python 3.9.13 (main, Oct 13 2022, 16:12:19) 
+[Clang 12.0.0 ] :: Anaconda, Inc. on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import tif_sequence_to_TIFF_frames as stf
+>>> stf.tif_to_TIFF_frames('PATH_TO_Files')
+[PosixPath('PATH_TO_Files/tutorial_example')]
+```
 
-<!-- """Given a folder path that contains a single or multiple folders with each folder having a single or multiple '.tif' sequence of images files. Will create a folder
-    with a similar name to the '.tif' file and save the separate image frames in a 'movie' folder following the format accepted by MicroBundlePillarTrack (i.e. '*_####.TIF').""" 
+After running ``tif_sequence_to_TIFF_frames.py``, the folder structure should be similar to the example below.
 
-    -->
+```bash
+|___ files
+        |___ tutorial_example
+                    |___ movie
+                            |___ *.TIF
+        |___"tutorial_example.tif"
+```
 
 ## Comparison to Available Tools <a name="comparison"></a>
 
