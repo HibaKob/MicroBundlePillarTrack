@@ -137,6 +137,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 ## To-Do List <a name="todo"></a>
 - [ ] Expand the test example dataset
+- [ ] Explore options for additional analysis/visualization
 
 ## References to Related Work <a name="references"></a>
 <a name="ref1"></a> [1] Kirillov, Alexander, et al. "Segment anything." arXiv preprint [arXiv:2304.02643](https://arxiv.org/abs/2304.02643)(2023)
