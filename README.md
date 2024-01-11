@@ -159,13 +159,13 @@ Type "help", "copyright", "credits" or "license" for more information.
 ['test_001', 'test_002', 'test_003', 'test_004', 'test_005', 'test_006', 'test_007', 'test_008', 'test_009', 'test_010', 'test_011', 'test_012', 'test_013', 'test_014', 'test_015']
 ```
 
-3. The provided ``tif_sequence_to_TIFF_frames.py`` script can be used to prepare a batch of ``.tif`` image sequence files into the format accepted by ``MicroBundlePillarTrack``. To use the script, the data should have the following original structure. 
+3. The provided ``tif_sequence_to_TIFF_frames.py`` script can be used to prepare a batch of ``.tif`` image sequence files into the format accepted by ``MicroBundlePillarTrack``. To use the script, the data should be saved in a folder having the following original structure. As a side note, the ``files`` folder can have multiple ``.tif`` files but we include here a single example due to file size restrictions on GitHub. 
 
 ```bash
 |___ files
         |___"tutorial_example.tif"
 ```
-To run the provided script, simply do the following in a terminal running python: 
+To run the provided script, simply do the following in a terminal running python, where the variable ``PATH_TO_Files`` is your local path to the ``files`` folder in this example: 
 ```bash
 (microbundle-pillar-track-env) hibakobeissi@Hibas-MacBook-Pro tutorials % python
 Python 3.9.13 (main, Oct 13 2022, 16:12:19) 
@@ -176,7 +176,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 [PosixPath('PATH_TO_Files/tutorial_example')]
 ```
 
-After running ``tif_sequence_to_TIFF_frames.py``, the folder structure should be similar to the example below.
+After running ``tif_sequence_to_TIFF_frames.py``, the folder structure should be similar to the example below, which is also the initial folder structure required for the pillar tracking code to work properly.
 
 ```bash
 |___ files
@@ -185,7 +185,12 @@ After running ``tif_sequence_to_TIFF_frames.py``, the folder structure should be
                             |___ *.TIF
         |___"tutorial_example.tif"
 ```
+Aside from the folder structure, the code requires that the frames in the ``movie`` folder span at least 3 beats. We mandate this requirement for better result outputs. 
 
+### Current core functionalities
+In the current version of the code, there are 3 core functionalities available for pillar tracking (automatic mask generation, tracking, and results visualization). As a brief note, it is not necessary to use all functionalities (e.g., you can still provide an externally generated mask and skip the automatic mask generation step or skip the visualization step).
+
+ To be able to run the code, we stress that for the code snippets in this section, the variable ``input_folder`` is a [``PosixPath``](https://docs.python.org/3/library/pathlib.html) that specifies the relative path between where the code is being run (for example the provided ``tutorials`` folder) and the ``example_folder`` defined [above](#data_prep) that the user wishes to analyze.
 ## Comparison to Available Tools <a name="comparison"></a>
 
 ## To-Do List <a name="todo"></a>
