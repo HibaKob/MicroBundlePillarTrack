@@ -132,6 +132,40 @@ Type "help", "copyright", "credits" or "license" for more information.
 ```
 
 ## Tutorial <a name="tutorial"></a>
+We include within this repository a ``tutorials`` folder containing and a single example folder, 2 python scripts for running the code in single file mode or in batch mode, a python script to convert ``.tif`` image sequence files to individual ``.TIF`` frames, and a python script to convert the software outputs saved as individual text files into a single ``.csv`` file . To run the tutorial, change your curent working directory to the ``tutorials`` folder.
+
+The data (frames to be tracked) will be contained in the ``movie`` folder. Critically:
+1. The files must have a ``.TIF`` extension.
+2. The files can have any name, but in order for the code to work properly they must be *in order*. For reference, we use ``sort`` to order file names. By default, this function sorts strings (such as file names) alphabetically and numbers numerically. Below are examples of good and bad file naming practices. 
+
+```bash
+(microbundle-compute-env) hibakobeissi@Hibas-MacBook-Pro MicroBundleCompute-master % python
+Python 3.9.13 (main, Oct 13 2022, 16:12:19) 
+[Clang 12.0.0 ] :: Anaconda, Inc. on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> bad_example = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]
+>>> bad_example.sort()
+>>> print(bad_example)
+['1', '10', '11', '12', '13', '14', '15', '2', '3', '4', '5', '6', '7', '8', '9']
+>>> 
+>>> good_example = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15"]
+>>> good_example.sort()
+>>> print(good_example)
+['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15']
+>>>
+>>> another_good_example = ["test_001","test_002","test_003","test_004","test_005","test_006","test_007","test_008","test_009","test_010","test_011","test_012","test_013","test_014","test_015"]
+>>> another_good_example.sort()
+>>> print(another_good_example)
+['test_001', 'test_002', 'test_003', 'test_004', 'test_005', 'test_006', 'test_007', 'test_008', 'test_009', 'test_010', 'test_011', 'test_012', 'test_013', 'test_014', 'test_015']
+```
+
+3. The provided ``tif_sequence_to_TIFF_frames.py`` script can be used to prepare a batch of ``.tif`` image sequence files into the format accepted by ``MicroBundlePillarTrack``. To use the script, the data should have the following original structure. 
+
+
+<!-- """Given a folder path that contains a single or multiple folders with each folder having a single or multiple '.tif' sequence of images files. Will create a folder
+    with a similar name to the '.tif' file and save the separate image frames in a 'movie' folder following the format accepted by MicroBundlePillarTrack (i.e. '*_####.TIF').""" 
+
+    -->
 
 ## Comparison to Available Tools <a name="comparison"></a>
 
