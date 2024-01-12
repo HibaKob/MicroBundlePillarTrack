@@ -226,7 +226,8 @@ Note that there is no need to provide ``input_folder`` when using this approach 
 >>> cpm.run_create_pillar_mask(input_folder, checkpoint_path, microbundle_type)
 ```
 
-Finally, 
+Finally, if both segmentation approaches fail, the user can still provide externally generated pillar masks. To do this, first the ``cpm.run_create_pillar_mask(input_folder, checkpoint_path, microbundle_type)`` line in the script file should be commented out, and second, a binary text file for each pillar mask saved as ``pillar_mask_1.txt`` and ``pillar_mask_2.txt``, where the mask region is denoted by `1` and the background by `0` should be provided in the ``masks`` folder.
+
 #### Pillar tracking 
 
 #### Post-tracking visualization
@@ -248,7 +249,9 @@ And it will automatically run the example specified by the ``files/tutorial_exam
 
 ## References <a name="references"></a>
 <a name="ref1"></a> [1] Kirillov, Alexander, et al. (2023). Segment anything. arXiv preprint [arXiv:2304.02643](https://arxiv.org/abs/2304.02643)
+
 <a name="ref2"></a> [2] Kobeissi, Hiba et al. (2023). MicroBundleCompute: Automated segmentation, tracking, and analysis of subdomain deformation in cardiac microbundles. arXiv preprint [arXiv:2308.0461](https://doi.org/10.48550/arXiv.2308.04610)
+
 <a name="ref3"></a> [3] Kobeissi, Hiba et al. (2023). Engineered cardiac microbundle time-lapse microscopy image dataset [Dataset]. Dryad. https://doi.org/10.5061/dryad.5x69p8d8g
 
 
