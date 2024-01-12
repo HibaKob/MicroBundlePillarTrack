@@ -167,7 +167,7 @@ Type "help", "copyright", "credits" or "license" for more information.
         |___"tutorial_example.tif"
 ```
 
-To run the provided script, simply do the following in a terminal running python, where the variable ``input_folder`` is a [``PosixPath``](https://docs.python.org/3/library/pathlib.html) that specifies the relative path between where the code is being run (for example the provided ``tutorials`` folder) and the ``files`` folder that contains the ``.tif`` files to be analyzed.
+To run the provided script, simply do the following in a ``microbundle-pillar-track-env`` python terminal, where the variable ``input_folder`` is a [``PosixPath``](https://docs.python.org/3/library/pathlib.html) that specifies the relative path between where the code is being run (for example the provided ``tutorials`` folder) and the ``files`` folder that contains the ``.tif`` files to be analyzed.
 
 ```bash
 (microbundle-pillar-track-env) hibakobeissi@Hibas-MacBook-Pro tutorials % python
@@ -178,8 +178,6 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> import tif_sequence_to_TIFF_frames as tsf
 >>> input_folder = Path('PATH_TO_FILES')
 >>> tsf.tif_to_TIFF_frames(input_folder)
-[PosixPath('PATH_TO_FILES/tutorial_example')]
->>> 
 ```
 
 After running ``tif_sequence_to_TIFF_frames.py``, the folder structure should be similar to the example below, which is also the initial folder structure required for the pillar tracking code to work properly.
@@ -197,39 +195,50 @@ Aside from the folder structure, the code requires that the frames in the ``movi
 ### Current core functionalities
 In the current version of the code, there are 3 core functionalities available for pillar tracking (automatic mask generation, tracking, and results visualization). As a brief note, it is not necessary to use all functionalities (e.g., you can still provide an externally generated mask and skip the automatic mask generation step or skip the visualization step).
 
- To be able to run the code, we stress that for the code snippets in this section, the variable ``input_folder`` is a [``PosixPath``], as defined [above](#data_prep), pointing to the folder that the user wishes to analyze.
+ To be able to run the code, we stress that for the code snippets in this section, the variable ``input_folder`` is a [``PosixPath``](https://docs.python.org/3/library/pathlib.html), as defined [above](#data_prep), pointing to the folder that the user wishes to analyze.
 
  #### Automatic mask segmentation
  As mentioned [above](#summary), we base our automatic pillar mask segmentation functionality on two different approaches: `1)` a straightforward threshold-based approach and `2)` an AI-based approach that implements a fine-tuned version of the [Segment Anything Model (SAM)](https://github.com/facebookresearch/segment-anything) [[1](#ref1)]. 
 
 The choice of segmentation approach is automatically determined by the code based on the user's input for the microbundle type. For "Type 1" input data, the code first performs segmentation based on local otsu thresholding. In case this first segmentation attempt fails to identify a mask for each pillar, a second trial at segmentation is done using the fine-tuned SAM for "Type 1" data. We adopt this two-trial approach because simple thresholding works well with most data examples of "Type 1", is significantly faster, and is less computationally expensive than SAM. "Type 2" data, on the other hand, present more challenging examples for a simple thresholding approach; instead, pillar segmentation is directly performed using fine-tuned SAM for "Type 2" data. 
 
+Automatic pillar segmentation is performed by the function ``run_create_pillar_mask`` which requires 3 inputs: a [``PosixPath``](https://docs.python.org/3/library/pathlib.html) of the folder to be analyzed (``input_folder``), a [``PosixPath``](https://docs.python.org/3/library/pathlib.html) of the folder containing the fine-tuned SAM checkpoints (``checkpoint_path``), and the microbundle type (``microbundle_type``).
 
-
-If the user wishes to use the ``run_code.py`` file to run the software, the ``track_mode`` should be specified as indicated below:
-
-```bash
-"""Specify if pillar or tissue tracking"""
-track_mode = "tissue" # "pillar" or "tissue"
-```
- Alternatively, the user can run the tissue tracking functions directly in a ``microbundle-compute-env`` python terminal as we show below.
-
-The function ``run_create_tissue_mask`` will use a specified segmentation function (e.g., ``seg_fcn_num = 1``), a movie frame number (e.g., ``frame_num = 0``), and a method (e.g., ``method = "minimum"``) to create a tissue mask text file with the name specified by the variable ``fname``. The subsequent steps of the code will require a file called ``tissue_mask.txt`` that should either be created with this function or manually. At present, there are three segmentation function types available: ``1)`` a straightforward threshold based mask, ``2)`` a threshold based mask that is applied after a Sobel filter, and ``3)`` a straightforward threshold based mask that is applied to either the ``minimum`` or the ``maximum`` (specified by the ``method`` input) of all movie frames. 
+A straightforward method to run the segmentation step is to use the provided ``run_code_pillar.py`` or ``run_code_pillar_batch.py`` script files. The only difference between the two files is that ``run_code_pillar.py`` expects ``input_folder`` to point to a single data example folder containing a ``movie`` folder while ``run_code_pillar_batch.py`` expects ``input_folder`` to point to a folder containing several data example folders where each of these example folders contains a ``movie`` folder. In simpler terms, the former can be used to perform the analysis on a single file per run, while the latter script loops through all the examples within the main folder. An example input to either script files can be:
 
 ```bash
-from microbundlecompute import create_tissue_mask as ctm
-from pathlib import Path
+'''Indicate microbundle type'''   
+microbundle_type = "type1" # Microbundle type can be either "type1" or "type2"
 
-seg_fcn_num = 3
-fname = "tissue_mask"
-frame_num = 0
-method = "minimum"
-ctm.run_create_tissue_mask(input_folder, seg_fcn_num, fname, frame_num, method)
+'''Indicate checkpoint path'''
+checkpoint_path = Path('/LOCAL_PATH_TO_PACKAGE/MicroBundlePillarTrack/src/microbundlepillartrack')
+```
+Note that there is no need to provide ``input_folder`` when using this approach as it will be specified as a user input when calling the scripts as shown [below](#run_code).
+
+ Alternatively, the user can run the pillar tracking functions directly in a ``microbundle-pillar-track-env`` python terminal as we show below.
+
+```bash
+>>> from microbundlepillartrack import create_pillar_mask as cpm
+>>> from pathlib import Path
+>>> input_folder = Path('PATH_TO_FILES/tutorial_example')
+>>> microbundle_type = "type1"
+>>> checkpoint_path = Path('/LOCAL_PATH_TO_PACKAGE/MicroBundlePillarTrack/src/microbundlepillartrack')
+>>> cpm.run_create_pillar_mask(input_folder, checkpoint_path, microbundle_type)
 ```
 
- #### Pillar tracking 
+Finally, 
+#### Pillar tracking 
 
- #### Post-tracking visualization
+#### Post-tracking visualization
+
+### Running the code  <a name="run_code"></a>
+Once the code is [installed](#install) and the data is set up according to the [instructions](#data_prep), running the code is actually quite straightforward. To run the tutorial example, navigate in the Terminal so that your current working directory is in the ``tutorials`` folder. To run the code on the provided single example, type:
+
+```bash
+python run_code.py files/tutorial_example
+```
+
+And it will automatically run the example specified by the ``files/tutorial_example`` folder and the associated visualization function. You can use the ``run_code.py`` to run your own code, you just need to specify a relative path between your current working directory (i.e., the directory that your ``Terminal`` is in) and the data that you want to analyze. Alternatively, you can modify ``run_code.py`` to make running code more conveneint (i.e., remove command line arguments, skip some steps). Here is how the outputs of the code will be structured (in the same folder as inputs ``movie`` and ``masks``) when both tracking modes (pillar and tissue) are run on the same example:
 
 ## Comparison to Available Tools <a name="comparison"></a>
 
