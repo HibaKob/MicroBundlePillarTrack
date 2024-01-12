@@ -230,8 +230,7 @@ The function ``run_pillar_tracking`` will automatically read the data specified 
 
 The ``run_pillar_tracking`` expects a number of user-defined parameters: `1)` the tissue depth as estimated experimentally (``tissue_depth``), `2)` a unit vector specifying the orientation of the pillars (``pillar_orientation_vector``: this input is optional; if kept as `None`, the unit vector is autmatically computed along the line connecting the two pillar centroids), `3)` the value of the pillar stiffness ($N/m$) (``pillar_stiffnes``) as measured experimentally, or `3a)` the pillar profile (``pillar_profile``) as either ``rectangular`` or ``circular``, `3b)` pdms Young's modulus (``pdms_E``) in $MPa$, `3c)` the pillar width (``pillar_width``) in $\mu m$, ``3d)`` the pillar thickness (``pillar_thickness``) in $\mu m$, ``3e)`` pillar diameter (``pillar_diameter``) in $\mu m$, ``3f)`` pillar length (``pillar_length``) in $\mu m$, and ``3g)``force application location  (``force_location``) in $\mu m$, two movie parameters ``4)`` the length scale (``ls``) in units of $\mu m/pixel$ and ``5)`` the frames per second (``fps``), and finally `6)` a boolean (``split``) specifying if the tracking is to be carried out per beat (if ``True``) or per the entire movie (if ``False``). More details about this functionality are provided [below](#split).
 
-We currently output all displacement results in units of pixels, force results in units of $\mu N$, velocity results in $\mu m/s$, tissue stress output in $MPa$, and time intervals with respect to frame number. We note that for calculating the pillar force and tissue stress, we follow the approach detailed in [this paper](https://www.pnas.org/doi/full/10.1073/pnas.0900174106)[4](#ref4), where the pillar is modeled as a cantilever. We are aware that different setups may have different pillar geometries and we plan to accomodate for this variation, as the need arises, in future iterations of the software. 
-
+We currently output all displacement results in units of pixels, force results in units of $\mu N$, velocity results in $\mu m/s$, tissue stress output in $MPa$, and time intervals with respect to frame number. We note that for calculating the pillar force and tissue stress, we follow the approach detailed in [[4](#ref4)] and elaborated on [below](#compute_stress), where the pillar is modeled as a cantilever. We are aware that different setups may have different pillar geometries and we plan to accomodate for this variation, as the need arises, in future iterations of the software. 
 
 ```bash
 from microbundlepillartrack import pillar_analysis as pa
@@ -268,8 +267,7 @@ pa.run_pillar_tracking(input_folder, tissue_depth, pillar_orientation_vector, pi
 ```
 
 #### Post-tracking visualization
-
-The function ``visualize_pillar_tracking`` is for visualizing the pillar tracking results consisting of timeseries plots of mean absolute pillar displacement and force. It takes length scale (``ls``) in units of $\mu m/pixel$, frames per second (``fps``), and (``split``) boolean as inputs. We note that in a continuous session, there is no need to redefine these parameters or to import the needed packages again. We include them in the example below for the sake of completeness only. 
+The function ``visualize_pillar_tracking`` is for visualizing the pillar tracking results consisting of timeseries plots of pillar displacement, force, and contraction and relaxation velocities, in addition to tissue stress, as shown [below](#results). It takes length scale (``ls``) in units of $\mu m/pixel$, frames per second (``fps``), and (``split``) boolean as inputs. We note that in a continuous session, there is no need to redefine these parameters or to import the needed packages again. We include them in the example below for the sake of completeness only. 
 
 ```bash
 from microbundlepillartrack import pillar_analysis as pa
@@ -287,14 +285,14 @@ pa.visualize_pillar_tracking(input_folder, ls, fps, split)
 
 As demonstrated here, the entire tracking and visualization process is fully automated and requires very little input from the user.
 
-<!-- <p align = "center">
-<img alt="absolute displacement" src="tutorials/figs/abs_disp.gif" width="60%" /> -->
-
-<!-- provide example results -->
-
 #### First valley adjustment
+To ensure that tracking is performed with respect to a fully relaxed tissue (i.e. a valley frame), we implement, within our computational pipeline, two functions, ``check_frame0_valley`` and ``adjust_first_valley``, that check whether or not the input movie begins at a valley frame and automatically adjust the movie to begin at one, if required. A user warning is issued when the movie is adjusted specifying the new starting frame. The adjusted frame list is saved into the ``movie`` folder while the original frame files are retained in the ``unadjusted_movie`` folder. 
 
 #### Drift correction <a name="split"></a>
+From our extensive experience with mainly brightfield movies of beating microbundles, 
+
+#### Tissue stress computation  <a name="compute_stress"></a>
+
 
 ### Running the code  <a name="run_code"></a>
 Once the code is [installed](#install) and the data is set up according to the [instructions](#data_prep), running the code is actually quite straightforward. To run the tutorial example, navigate in the Terminal so that your current working directory is in the ``tutorials`` folder. To run the code on the provided single example, type:
@@ -307,7 +305,12 @@ And it will automatically run the example specified by the ``files/tutorial_exam
 
 ### Understanding the output files
 <!-- systematically mask 1: left mask 2: right -->
-### Understanding the visualization results
+### Understanding the visualization results <a name="results"></a>
+
+<!-- <p align = "center">
+<img alt="absolute displacement" src="tutorials/figs/abs_disp.gif" width="60%" /> --> 
+
+<!-- provide example results -->
 
 <!-- ## Comparison to Available Tools <a name="comparison"></a> -->
 
