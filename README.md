@@ -42,17 +42,17 @@ deprecated warnings suppressed when testing
 * [Project Roadmap](#roadmap)
 * [Installation Instructions](#install)
 * [Tutorial](#tutorial)
-* [Comparison to Available Tools](#comparison)
+<!-- * [Comparison to Available Tools](#comparison) -->
 * [To-Do List](#todo)
 * [References to Related Work](#references)
 * [Contact Information](#contact)
 * [Acknowledgements](#acknowledge)
 
 ## Project Summary <a name="summary"></a>
-The MicroBundlePillarTrack software is an adaptation of [MicroBundleCompute](https://github.com/HibaKob/MicroBundleCompute) software and is developed specifically for tracking the deformation of the pillars or posts of beating microbundles in brightfield movies. We consider two types of pillar-based microbundle platforms: `1)` "Type 1" which consist of standard experimental microbundle platforms termed microbundle strain gauges and `2)` "Type 2" experimental platforms which correspond to non-standard platforms termed FibroTUGs as described in detail in [1](#ref1) and [2](#ref2). In this repository, we share the source code, steps to download and install the software, and tutorials on how to run its different functionalities. 
+The MicroBundlePillarTrack software is an adaptation of [MicroBundleCompute](https://github.com/HibaKob/MicroBundleCompute) software and is developed specifically for tracking the deformation of the pillars or posts of beating microbundles in brightfield movies. We consider two types of pillar-based microbundle platforms: `1)` "Type 1" which consist of standard experimental microbundle platforms termed microbundle strain gauges and `2)` "Type 2" experimental platforms which correspond to non-standard platforms termed FibroTUGs as described in detail in [[1](#ref1)] and [[2](#ref2)]. In this repository, we share the source code, steps to download and install the software, and tutorials on how to run its different functionalities. 
 
 
-As with MicroBundleCompute, MicroBundlePillarTrack requires two main inputs: `1)` two seperate binary masks for each of the microbundle pillars or posts and `2)` consecutive movie frames of the beating microbundle. Within our pipeline, the pillar masks are gerenated automatically by either implementing a straightforward threshold based segmentation or by employing a fine-tuned version of the [Segment Anything Model (SAM)](https://github.com/facebookresearch/segment-anything)[3](#ref3). Nevertheless, we retain the option for the user to input a manually or externally generated mask in case both of our automated approaches fail. Following pillar segmentation, fiducial markers identified as Shi-Tomasi corner points are computed on the first frame of the movie and tracked across all frames. From this preliminary tracking, we can identify whether or not the microbundle movie starts from a fully relaxed position (valley frame), identify the first valley frame if it is different from frame 0 (first frame), and adjust the movie accordingly. By tracking the adjusted movie, we obtain pillar positions across consecutive frames, and subsequently, we are able to compute the pillars' mean directional and absolute displacements. Additional derived outputs include microbundle twitch force and stress results, and temporal outputs that include pillar contraction and relaxation velocities as well as full width (or duration) at half maximum (FWHM) and full width (or duration) at 90 maximum (FW90M).
+As with MicroBundleCompute, MicroBundlePillarTrack requires two main inputs: `1)` two seperate binary masks for each of the microbundle pillars or posts and `2)` consecutive movie frames of the beating microbundle. Within our pipeline, the pillar masks are gerenated automatically by either implementing a straightforward threshold based segmentation or by employing a fine-tuned version of the [Segment Anything Model (SAM)](https://github.com/facebookresearch/segment-anything)[[3](#ref3)]. Nevertheless, we retain the option for the user to input a manually or externally generated mask in case both of our automated approaches fail. Following pillar segmentation, fiducial markers identified as Shi-Tomasi corner points are computed on the first frame of the movie and tracked across all frames. From this preliminary tracking, we can identify whether or not the microbundle movie starts from a fully relaxed position (valley frame), identify the first valley frame if it is different from frame 0 (first frame), and adjust the movie accordingly. By tracking the adjusted movie, we obtain pillar positions across consecutive frames, and subsequently, we are able to compute the pillars' mean directional and absolute displacements. Additional derived outputs include microbundle twitch force and stress results, and temporal outputs that include pillar contraction and relaxation velocities as well as full width (or duration) at half maximum (FWHM) and full width (or duration) at 90 maximum (FW90M).
 
 We are also adding new functionalities to the code as well as enhancing the software based on user feedback. Please check our [to-do list]((#todo)).
 
@@ -194,7 +194,7 @@ In the current version of the code, there are 3 core functionalities available f
  To be able to run the code, we stress that for the code snippets in this section, the variable ``input_folder`` is a [``PosixPath``](https://docs.python.org/3/library/pathlib.html), as defined [above](#data_prep), pointing to the folder that the user wishes to analyze.
 
  #### Automatic mask segmentation
- As mentioned [above](#summary), we base our automatic pillar mask segmentation functionality on two different approaches: `1)` a straightforward threshold-based approach and `2)` an AI-based approach that implements a fine-tuned version of the [Segment Anything Model (SAM)](https://github.com/facebookresearch/segment-anything)[3](#ref3). 
+ As mentioned [above](#summary), we base our automatic pillar mask segmentation functionality on two different approaches: `1)` a straightforward threshold-based approach and `2)` an AI-based approach that implements a fine-tuned version of the [Segment Anything Model (SAM)](https://github.com/facebookresearch/segment-anything)[[3](#ref3)]. 
 
 The choice of segmentation approach is automatically determined by the code based on the user's input for the microbundle type. For "Type 1" input data, the code first performs segmentation based on local otsu thresholding. In case this first segmentation attempt fails to identify a mask for each pillar, a second trial at segmentation is done using the fine-tuned SAM for "Type 1" data. We adopt this two-trial approach because simple thresholding works well with most data examples of "Type 1", is significantly faster, and is less computationally expensive than SAM. "Type 2" data, on the other hand, present more challenging examples for a simple thresholding approach; instead, pillar segmentation is directly performed using fine-tuned SAM for "Type 2" data. 
 
@@ -214,12 +214,13 @@ Note that there is no need to provide ``input_folder`` when using this approach 
  Alternatively, the user can run the pillar tracking functions directly in a ``microbundle-pillar-track-env`` python terminal as we show below.
 
 ```bash
->>> from microbundlepillartrack import create_pillar_mask as cpm
->>> from pathlib import Path
->>> input_folder = Path('PATH_TO_FILES/tutorial_example')
->>> microbundle_type = "type1"
->>> checkpoint_path = Path('/LOCAL_PATH_TO_PACKAGE/MicroBundlePillarTrack/src/microbundlepillartrack')
->>> cpm.run_create_pillar_mask(input_folder, checkpoint_path, microbundle_type)
+from microbundlepillartrack import create_pillar_mask as cpm
+from pathlib import Path
+
+input_folder = Path('PATH_TO_FILES/tutorial_example')
+microbundle_type = "type1"
+checkpoint_path = Path('/LOCAL_PATH_TO_PACKAGE/MicroBundlePillarTrack/src/microbundlepillartrack')
+cpm.run_create_pillar_mask(input_folder, checkpoint_path, microbundle_type)
 ```
 
 Finally, if both segmentation approaches fail, the user can still provide externally generated pillar masks. To do this, first the ``cpm.run_create_pillar_mask(input_folder, checkpoint_path, microbundle_type)`` line in the script file should be commented out, and second, a binary text file for each pillar mask saved as ``pillar_mask_1.txt`` and ``pillar_mask_2.txt`` where the mask region is denoted by "1" and the background by "0", should be provided in the ``masks`` folder.
@@ -229,34 +230,65 @@ The function ``run_pillar_tracking`` will automatically read the data specified 
 
 The ``run_pillar_tracking`` expects a number of user-defined parameters: `1)` the tissue depth as estimated experimentally (``tissue_depth``), `2)` a unit vector specifying the orientation of the pillars (``pillar_orientation_vector``: this input is optional; if kept as `None`, the unit vector is autmatically computed along the line connecting the two pillar centroids), `3)` the value of the pillar stiffness ($N/m$) (``pillar_stiffnes``) as measured experimentally, or `3a)` the pillar profile (``pillar_profile``) as either ``rectangular`` or ``circular``, `3b)` pdms Young's modulus (``pdms_E``) in $MPa$, `3c)` the pillar width (``pillar_width``) in $\mu m$, ``3d)`` the pillar thickness (``pillar_thickness``) in $\mu m$, ``3e)`` pillar diameter (``pillar_diameter``) in $\mu m$, ``3f)`` pillar length (``pillar_length``) in $\mu m$, and ``3g)``force application location  (``force_location``) in $\mu m$, two movie parameters ``4)`` the length scale (``ls``) in units of $\mu m/pixel$ and ``5)`` the frames per second (``fps``), and finally `6)` a boolean (``split``) specifying if the tracking is to be carried out per beat (if ``True``) or per the entire movie (if ``False``). More details about this functionality are provided [below](#split).
 
-We currently output all displacement results in units of pixels, force results in units of $\mu N$, velocity results in $\mu m/s$, tissue stress output in $MPa$, and time intervals with respect to frame number. We note that for calculating the pillar force and tissue stress, we follow the approach detailed in [this paper](https://www.pnas.org/doi/full/10.1073/pnas.0900174106)[4](#ref4), where the pillar is modeled as a cantilever. We are aware that different setups may have different pillar geometries and we plan to accomodate for this variation in future iterations of the pillar tracking functionality, as the need arises. 
+We currently output all displacement results in units of pixels, force results in units of $\mu N$, velocity results in $\mu m/s$, tissue stress output in $MPa$, and time intervals with respect to frame number. We note that for calculating the pillar force and tissue stress, we follow the approach detailed in [this paper](https://www.pnas.org/doi/full/10.1073/pnas.0900174106)[4](#ref4), where the pillar is modeled as a cantilever. We are aware that different setups may have different pillar geometries and we plan to accomodate for this variation, as the need arises, in future iterations of the software. 
 
 
 ```bash
-from microbundlecompute import image_analysis as ia
-import matplotlib.pyplot as plt
+from microbundlepillartrack import pillar_analysis as pa
 from pathlib import Path
 
+'''Movie parameters: frames per second(fps) and length scale (ls) as micrometers/pixel'''
 fps = 30 
 ls = 4
 
-input_folder = Path(folder_path)
- # run the tracking
-ia.run_tracking(input_folder,fps,ls)
-    
+'''Indicate microbundle type'''   
+microbundle_type = "type1" # Microbundle type can be either "type1" or "type2"
+'''Pillar stiffness can be directly provided: replace `None` by a value''' 
+pillar_stiffnes = 2.677 # Provide this value in Newton per meter (N/m) 
+''' Or calculated based on the specified pillar parameters (Change as suitable)'''
+pillar_profile = 'circular' # Pillar profile can be either "rectangular" or "circular"
+pdms_E = 1.61 # Provide this value in MPa
+# If rectangular: 
+pillar_width = 163 # Provide this value in micrometer (um)
+pillar_thickness = 33.2 # Provide this value in micrometer (um)
+# If circular:
+pillar_diameter = 400 # Provide this value in micrometer (um)
+
+pillar_length = 199.3 # Provide this value in micrometer (um)
+force_location = 163 # Provide this value in micrometer (um)
+
+pillar_orientation_vector = None
+"""Type1 tissue depth"""        
+tissue_depth = 350 # Provide this value in micrometer (um) (type 1)
+
+''' Set to `True` to eliminate drift if observed in pillar results'''
+split = False
+
+pa.run_pillar_tracking(input_folder, tissue_depth, pillar_orientation_vector, pillar_stiffnes, pillar_profile, pdms_E, pillar_width, pillar_thickness, pillar_diameter, pillar_length, force_location, ls, fps, split)
 ```
-
-The entire tracking process is fully automated and requires very little input from the user. 
-
 
 #### Post-tracking visualization
 
-The function ``run_visualization`` is for visualizing the tracking results. The inputs ``col_min_*``, ``col_max_*``, and ``col_map`` are the minimum absolute/row/column displacement in pixels, the maximum absolute/row/column displacement in pixels, and the [matplotlib colormap](https://matplotlib.org/stable/tutorials/colors/colormaps.html) selected for visualization, respectively. If the input ``automatic_color_constraint`` is put as ``True``, the input values for ``col_max_*`` and ``col_min_*`` will be overwritten by the values automatically calculated by the code.  
+The function ``visualize_pillar_tracking`` is for visualizing the pillar tracking results consisting of timeseries plots of mean absolute pillar displacement and force. It takes length scale (``ls``) in units of $\mu m/pixel$, frames per second (``fps``), and (``split``) boolean as inputs. We note that in a continuous session, there is no need to redefine these parameters or to import the needed packages again. We include them in the example below for the sake of completeness only. 
+
+```bash
+from microbundlepillartrack import pillar_analysis as pa
+from pathlib import Path
+
+'''Movie parameters: frames per second(fps) and length scale (ls) as micrometers/pixel'''
+fps = 30 
+ls = 4
+
+''' Set to `True` to eliminate drift if observed in pillar results'''
+split = False
+
+pa.visualize_pillar_tracking(input_folder, ls, fps, split)
+```
+
+As demonstrated here, the entire tracking and visualization process is fully automated and requires very little input from the user.
 
 <!-- <p align = "center">
 <img alt="absolute displacement" src="tutorials/figs/abs_disp.gif" width="60%" /> -->
-
-The function ``visualize_pillar_tracking`` is for visualizing the pillar tracking results consisting of timeseries plots of mean absolute pillar displacement and force.
 
 <!-- provide example results -->
 
@@ -277,7 +309,7 @@ And it will automatically run the example specified by the ``files/tutorial_exam
 <!-- systematically mask 1: left mask 2: right -->
 ### Understanding the visualization results
 
-## Comparison to Available Tools <a name="comparison"></a>
+<!-- ## Comparison to Available Tools <a name="comparison"></a> -->
 
 ## To-Do List <a name="todo"></a>
 - [ ] Expand the test example dataset
