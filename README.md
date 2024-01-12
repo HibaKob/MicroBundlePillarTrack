@@ -53,10 +53,10 @@ deprecated warnings suppressed when testing
 * [Acknowledgements](#acknowledge)
 
 ## Project Summary <a name="summary"></a>
-The MicroBundlePillarTrack software is an adaptation of [MicroBundleCompute](https://github.com/HibaKob/MicroBundleCompute) software and is developed specifically for tracking the deformation of the pillars or posts of beating microbundles in brightfield movies. In this repository, we share the source code, steps to download and install the software, and tutorials on how to run its different functionalities. 
+The MicroBundlePillarTrack software is an adaptation of [MicroBundleCompute](https://github.com/HibaKob/MicroBundleCompute) software and is developed specifically for tracking the deformation of the pillars or posts of beating microbundles in brightfield movies. We consider two types of pillar-based microbundle platforms: `1)` "Type 1" which consist of standard experimental microbundle platforms termed microbundle strain gauges and `2)` "Type 2" experimental platforms which correspond to non-standard platforms termed FibroTUGs as described in detail in [2](#ref2) and [3](#ref3). In this repository, we share the source code, steps to download and install the software, and tutorials on how to run its different functionalities. 
 
 
-As with MicroBundleCompute, MicroBundlePillarTrack requires two main inputs: 1) two seperate binary masks for each of the microbundle pillars or posts and 2) consecutive movie frames of the beating microbundle. Within our pipeline, the pillar masks are gerenated automatically by either implementing a straightforward threshold based segmentation or by employing a fine-tuned version of the [Segment Anything Model (SAM)](https://github.com/facebookresearch/segment-anything) [[1](#ref1)]. Nevertheless, we retain the option for the user to input a manually or externally generated mask in case both of our automated approaches fail. Following pillar segmentation, fiducial markers identified as Shi-Tomasi corner points are computed on the first frame of the movie and tracked across all frames. From this preliminary tracking, we can identify whether or not the microbundle movie starts from a fully relaxed position (valley frame), identify the first valley frame if it is different from frame 0 (first frame), and adjust the movie accordingly. By tracking the adjusted movie, we obtain pillar positions across consecutive frames, and subsequently, we are able to compute the pillars' mean directional and absolute displacements. Additional derived outputs include microbundle twitch force and stress results, and temporal outputs that include pillar contraction and relaxation velocities as well as full width (or duration) at half maximum (FWHM) and full width (or duration) at 90 maximum (FW90M).
+As with MicroBundleCompute, MicroBundlePillarTrack requires two main inputs: `1)` two seperate binary masks for each of the microbundle pillars or posts and `2)` consecutive movie frames of the beating microbundle. Within our pipeline, the pillar masks are gerenated automatically by either implementing a straightforward threshold based segmentation or by employing a fine-tuned version of the [Segment Anything Model (SAM)](https://github.com/facebookresearch/segment-anything) [[1](#ref1)]. Nevertheless, we retain the option for the user to input a manually or externally generated mask in case both of our automated approaches fail. Following pillar segmentation, fiducial markers identified as Shi-Tomasi corner points are computed on the first frame of the movie and tracked across all frames. From this preliminary tracking, we can identify whether or not the microbundle movie starts from a fully relaxed position (valley frame), identify the first valley frame if it is different from frame 0 (first frame), and adjust the movie accordingly. By tracking the adjusted movie, we obtain pillar positions across consecutive frames, and subsequently, we are able to compute the pillars' mean directional and absolute displacements. Additional derived outputs include microbundle twitch force and stress results, and temporal outputs that include pillar contraction and relaxation velocities as well as full width (or duration) at half maximum (FWHM) and full width (or duration) at 90 maximum (FW90M).
 
 We are also adding new functionalities to the code as well as enhancing the software based on user feedback. Please check our [to-do list]((#todo)).
 
@@ -167,8 +167,7 @@ Type "help", "copyright", "credits" or "license" for more information.
         |___"tutorial_example.tif"
 ```
 
-To run the provided script, simply do the following in a terminal running python, where the variable ``input_folder`` is a [``PosixPath``](https://docs.python.org/3/library/pathlib.html) that specifies the relative path between where the code is being run (for example the provided ``tutorials`` folder) and the ``files`` folder that contains the ``.tif`` files to be analyzed, as defined [above](#data_prep).
-
+To run the provided script, simply do the following in a terminal running python, where the variable ``input_folder`` is a [``PosixPath``](https://docs.python.org/3/library/pathlib.html) that specifies the relative path between where the code is being run (for example the provided ``tutorials`` folder) and the ``files`` folder that contains the ``.tif`` files to be analyzed.
 
 ```bash
 (microbundle-pillar-track-env) hibakobeissi@Hibas-MacBook-Pro tutorials % python
@@ -192,25 +191,60 @@ After running ``tif_sequence_to_TIFF_frames.py``, the folder structure should be
                             |___ *.TIF
         |___"tutorial_example.tif"
 ```
+
 Aside from the folder structure, the code requires that the frames in the ``movie`` folder span at least 3 beats. We mandate this requirement for better result outputs. 
 
 ### Current core functionalities
 In the current version of the code, there are 3 core functionalities available for pillar tracking (automatic mask generation, tracking, and results visualization). As a brief note, it is not necessary to use all functionalities (e.g., you can still provide an externally generated mask and skip the automatic mask generation step or skip the visualization step).
 
- To be able to run the code, we stress that for the code snippets in this section, the variable ``input_folder`` is a [``PosixPath``] as defined [above](#data_prep) that the user wishes to analyze.
- 
+ To be able to run the code, we stress that for the code snippets in this section, the variable ``input_folder`` is a [``PosixPath``], as defined [above](#data_prep), pointing to the folder that the user wishes to analyze.
+
+ #### Automatic mask segmentation
+ As mentioned [above](#summary), we base our automatic pillar mask segmentation functionality on two different approaches: `1)` a straightforward threshold-based approach and `2)` an AI-based approach that implements a fine-tuned version of the [Segment Anything Model (SAM)](https://github.com/facebookresearch/segment-anything) [[1](#ref1)]. 
+
+The choice of segmentation approach is automatically determined by the code based on the user's input for the microbundle type. For "Type 1" input data, the code first performs segmentation based on local otsu thresholding. In case this first segmentation attempt fails to identify a mask for each pillar, a second trial at segmentation is done using the fine-tuned SAM for "Type 1" data. We adopt this two-trial approach because simple thresholding works well with most data examples of "Type 1", is significantly faster, and is less computationally expensive than SAM. "Type 2" data, on the other hand, present more challenging examples for a simple thresholding approach; instead, pillar segmentation is directly performed using fine-tuned SAM for "Type 2" data. 
+
+
+
+If the user wishes to use the ``run_code.py`` file to run the software, the ``track_mode`` should be specified as indicated below:
+
+```bash
+"""Specify if pillar or tissue tracking"""
+track_mode = "tissue" # "pillar" or "tissue"
+```
+ Alternatively, the user can run the tissue tracking functions directly in a ``microbundle-compute-env`` python terminal as we show below.
+
+The function ``run_create_tissue_mask`` will use a specified segmentation function (e.g., ``seg_fcn_num = 1``), a movie frame number (e.g., ``frame_num = 0``), and a method (e.g., ``method = "minimum"``) to create a tissue mask text file with the name specified by the variable ``fname``. The subsequent steps of the code will require a file called ``tissue_mask.txt`` that should either be created with this function or manually. At present, there are three segmentation function types available: ``1)`` a straightforward threshold based mask, ``2)`` a threshold based mask that is applied after a Sobel filter, and ``3)`` a straightforward threshold based mask that is applied to either the ``minimum`` or the ``maximum`` (specified by the ``method`` input) of all movie frames. 
+
+```bash
+from microbundlecompute import create_tissue_mask as ctm
+from pathlib import Path
+
+seg_fcn_num = 3
+fname = "tissue_mask"
+frame_num = 0
+method = "minimum"
+ctm.run_create_tissue_mask(input_folder, seg_fcn_num, fname, frame_num, method)
+```
+
+ #### Pillar tracking 
+
+ #### Post-tracking visualization
+
 ## Comparison to Available Tools <a name="comparison"></a>
 
 ## To-Do List <a name="todo"></a>
 - [ ] Expand the test example dataset
 - [ ] Explore options for additional analysis/visualization
 
-## References to Related Work <a name="references"></a>
-<a name="ref1"></a> [1] Kirillov, Alexander, et al. "Segment anything." arXiv preprint [arXiv:2304.02643](https://arxiv.org/abs/2304.02643)(2023)
+## References <a name="references"></a>
+<a name="ref1"></a> [1] Kirillov, Alexander, et al. (2023). Segment anything. arXiv preprint [arXiv:2304.02643](https://arxiv.org/abs/2304.02643)
+<a name="ref2"></a> [2] Kobeissi, Hiba et al. (2023). MicroBundleCompute: Automated segmentation, tracking, and analysis of subdomain deformation in cardiac microbundles. arXiv preprint [arXiv:2308.0461](https://doi.org/10.48550/arXiv.2308.04610)
+<a name="ref3"></a> [3] Kobeissi, Hiba et al. (2023). Engineered cardiac microbundle time-lapse microscopy image dataset [Dataset]. Dryad. https://doi.org/10.5061/dryad.5x69p8d8g
 
 
-<!-- MicroBundleCompute Repo + paper
-Dataset when up + microbundle dataset -->
+<!-- MicroBundleCompute Repo
+Dataset when up -->
 
 ## Contact Information <a name="contact"></a>
 For additional information, please contact Emma Lejeune ``elejeune@bu.edu`` or Hiba Kobeissi ``hibakob@bu.edu``.
