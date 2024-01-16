@@ -228,9 +228,9 @@ Finally, if both segmentation approaches fail, the user can still provide extern
 #### Pillar tracking 
 The function ``run_pillar_tracking`` will automatically read the data specified by the input folder (tiff files and mask file), run tracking, and save the results as text files.
 
-The ``run_pillar_tracking`` expects a number of user-defined parameters: `1)` the tissue depth as estimated experimentally (``tissue_depth``), `2)` a unit vector specifying the orientation of the pillars (``pillar_orientation_vector``: this input is optional; if kept as `None`, the unit vector is autmatically computed along the line connecting the two pillar centroids), `3)` the value of the pillar stiffness ($N/m$) (``pillar_stiffnes``) as measured experimentally, or `3a)` the pillar profile (``pillar_profile``) as either ``rectangular`` or ``circular``, `3b)` pdms Young's modulus (``pdms_E``) in $MPa$, `3c)` the pillar width (``pillar_width``) in $\mu m$, ``3d)`` the pillar thickness (``pillar_thickness``) in $\mu m$, ``3e)`` pillar diameter (``pillar_diameter``) in $\mu m$, ``3f)`` pillar length (``pillar_length``) in $\mu m$, and ``3g)``force application location  (``force_location``) in $\mu m$, two movie parameters ``4)`` the length scale (``ls``) in units of $\mu m/pixel$ and ``5)`` the frames per second (``fps``), and finally `6)` a boolean (``split``) specifying if the tracking is to be carried out per beat (if ``True``) or per the entire movie (if ``False``). More details about this functionality are provided [below](#split).
+The ``run_pillar_tracking`` expects a number of user-defined parameters: `1)` the tissue depth as estimated experimentally (``tissue_depth``), `2)` a unit vector specifying the orientation of the pillars (``pillar_orientation_vector``: this input is optional; if kept as `None`, the unit vector is autmatically computed along the line connecting the two pillar centroids), `3)` the value of the pillar stiffness ($N/m$) (``pillar_stiffnes``) as measured experimentally, or `3a)` the pillar profile (``pillar_profile``) as either ``rectangular`` or ``circular``, `3b)` pdms Young's modulus (``pdms_E``) in MPa, `3c)` the pillar width (``pillar_width``) in $\mu$ m, ``3d)`` the pillar thickness (``pillar_thickness``) in $\mu$ m, ``3e)`` pillar diameter (``pillar_diameter``) in $\mu$ m, ``3f)`` pillar length (``pillar_length``) in $\mu$ m, and ``3g)``force application location  (``force_location``) in $\mu$ m, two movie parameters ``4)`` the length scale (``ls``) in units of $\mu$ m/pixel and ``5)`` the frames per second (``fps``), and finally `6)` a boolean (``split``) specifying if the tracking is to be carried out per beat (if ``True``) or per the entire movie (if ``False``). More details about this functionality are provided [below](#split).
 
-We currently output all displacement results in units of pixels, force results in units of $\mu N$, velocity results in $\mu m/s$, tissue stress output in $MPa$, and time intervals with respect to frame number. We note that for calculating the pillar force and tissue stress, we follow the approach detailed in [[4](#ref4)] and elaborated on [below](#compute_stress), where the pillar is modeled as a cantilever. We are aware that different setups may have different pillar geometries and we plan to accomodate for this variation, as the need arises, in future iterations of the software. 
+We currently output all displacement results in units of pixels, force results in units of $\mu$ N, velocity results in $\mu$ m/s, tissue stress output in MPa, and time intervals with respect to frame number. We note that for calculating the pillar force and tissue stress, we follow the approach detailed in [[4](#ref4)] and elaborated on [below](#compute_stress), where the pillar is modeled as a cantilever. We are aware that different setups may have different pillar geometries and we plan to accomodate for this variation, as the need arises, in future iterations of the software. 
 
 ```bash
 from microbundlepillartrack import pillar_analysis as pa
@@ -267,7 +267,7 @@ pa.run_pillar_tracking(input_folder, tissue_depth, pillar_orientation_vector, pi
 ```
 
 #### Post-tracking visualization
-The function ``visualize_pillar_tracking`` is for visualizing the pillar tracking results consisting of timeseries plots of pillar displacement, force, and contraction and relaxation velocities, in addition to tissue stress, as shown [below](#results). It takes length scale (``ls``) in units of $\mu m/pixel$, frames per second (``fps``), and (``split``) boolean as inputs. We note that in a continuous session, there is no need to redefine these parameters or to import the needed packages again. We include them in the example below for the sake of completeness only. 
+The function ``visualize_pillar_tracking`` is for visualizing the pillar tracking results consisting of timeseries plots of pillar displacement, force, and contraction and relaxation velocities, in addition to tissue stress, as shown [below](#results). It takes length scale (``ls``) in units of $\mu$ m/pixel, frames per second (``fps``), and (``split``) boolean as inputs. We note that in a continuous session, there is no need to redefine these parameters or to import the needed packages again. We include them in the example below for the sake of completeness only. 
 
 ```bash
 from microbundlepillartrack import pillar_analysis as pa
@@ -294,16 +294,58 @@ From our extensive experience analyzing mainly brightfield movies of beating mic
 We note that drift correction is not performed automatically; instead, a warning is issued to the user who can later decide whether or not to repeat tracking with beat splitting by setting the ``split`` input parameter to ``True``. In some cases, high drift is caused by imaging artifacts such as shadows or degraded image quality that cannot be eliminated by splitting. When this happens, a warning is given to the user that drift is still present in the tracked results and that it is recommended to analyze only a portion of the movie. It is critical that a minimum of 3 beats is present in any movie to enable automatic analysis and carrying out the necessary adjustments and corrections. 
 
 #### Tissue stress computation  <a name="compute_stress"></a>
+As aforementioned, twitch force is calculated by modeling the pillars or posts as cantilevers [[4](#ref4)]. Tissue stress is then obtained by normalizing the mean of the two twitch forces obtained for each pillar by the cross-sectional area of the microbundle (depth $x$ width). To find this cross-sectional area, the user is required to provide the microbundle depth in $\mu$ m. The microbundle width is calculated automatically by thresholding a region of the first frame centered around the microbundle, taking the average of the resulting binary mask along the column direction, and finally calculating the distance between the sharpest two changes in mean intensity indicating the transition from a dark background to a light tissue region and then back to a dark background. We note that microbundle width calculation is performed on a rotated frame such that a vector joining the centroids of the two pillars aligns with the horizontal direction. 
 
+For suboptimal examples, low contrast videos for instance, the calculated microbundle width may not be accurate. In these cases, a warning notifies the user of this possibility. Also, a binary mask of the region used for width calculation is saved to the ``masks`` folder as ``mid_tissue_mask.png`` to enable the user to assess the accuracy of the automated width estimation. 
 
 ### Running the code  <a name="run_code"></a>
-Once the code is [installed](#install) and the data is set up according to the [instructions](#data_prep), running the code is actually quite straightforward. To run the tutorial example, navigate in the Terminal so that your current working directory is in the ``tutorials`` folder. To run the code on the provided single example, type:
+Once the software is [installed](#install) and the data is set up according to the [instructions](#data_prep), running the code is quite straightforward. To run the tutorial example, navigate in the Terminal so that your current working directory is in the ``tutorials`` folder. To run the code on the provided single example, type:
 
 ```bash
-python run_code.py files/tutorial_example
+python run_code_pillar.py files/tutorial_example
 ```
 
-And it will automatically run the example specified by the ``files/tutorial_example`` folder and the associated visualization function. You can use the ``run_code.py`` to run your own code, you just need to specify a relative path between your current working directory (i.e., the directory that your ``Terminal`` is in) and the data that you want to analyze. Alternatively, you can modify ``run_code.py`` to make running code more conveneint (i.e., remove command line arguments, skip some steps). Here is how the outputs of the code will be structured (in the same folder as inputs ``movie`` and ``masks``) when both tracking modes (pillar and tissue) are run on the same example:
+And it will automatically run the example specified by the ``files/tutorial_example`` folder and the associated visualization function. You can use the ``run_code_pillar.py`` to run your own code, you just need to specify a relative path between your current working directory (i.e., the directory that your ``Terminal`` is in) and the data that you want to analyze. Alternatively, you can modify ``run_code_pillar.py`` to make running code more conveneint (i.e., remove command line arguments, skip some steps). Here is how the outputs of the code will be structured (in the same folder as input ``movie``):
+
+```bash
+|___ example_data
+|        |___ movie
+|                |___"*.TIF"
+|        |___ unadjusted_movie       (if original movie is adjusted)
+|                |___"*.TIF"
+|        |___ masks
+|                |___"pillar_mask_1.txt"      
+|                |___"pillar_mask_1.png"         
+|                |___"pillar_mask_2.txt"
+|                |___"pillar_mask_2.png"        
+|                |___"pillar_masks_overlay.png" 
+|                |___"mid_tissue_mask.png" 
+|        |___ pillar_results
+|                |___"orientation_info.txt"
+|                |___"pillar%i_beat_peaks.txt"
+|                |___"pillar%i_info.txt"
+|                |___"pillar%i_row.txt"                     (if split = False)
+|                |___"pillar%i_col.txt"                     (if split = False)
+|                |___"pillar%i_beat%i_row.txt"              (if split = True)
+|                |___"pillar%i_beat%i_col.txt"              (if split = True)
+|                |___"pillar%i_pillar_velocity.txt"
+|                |___"pillar%i_pillar_contraction_vel_info.txt"
+|                |___"pillar%i_pillar_relaxation_vel_info.txt"
+|                |___"pillar%i_t50_beat_width_info.txt"
+|                |___"pillar%i_t80_beat_width_info.txt"
+|                |___"pillar%i_pillar_force_abs.txt"
+|                |___"pillar%i_pillar_force_row.txt"
+|                |___"pillar%i_pillar_force_col.txt"
+|                |___"tissue_width_info.txt"
+|                |___"tissue_stress.txt"
+|        |___ pillar_visualizations
+|                |___"pillar_directional_displacement.pdf"
+|                |___"pillar_mean_absolute_displacement.pdf"
+|                |___"pillar_time_intervals.pdf"
+|                |___"pillar_velocity_results.pdf"
+|                |___"pillar_force_absolute.pdf"
+|                |___"tissue_stress.pdf"
+```
 
 ### Understanding the output files
 <!-- systematically mask 1: left mask 2: right -->
@@ -332,7 +374,7 @@ to each segmented beat.  -->
 
 <a name="ref3"></a> [3] Kirillov, Alexander, et al. (2023). Segment anything. arXiv preprint [arXiv:2304.02643](https://arxiv.org/abs/2304.02643)
 
-<a name="ref4"></a> [4] Legant, Wesley R. et al. (2009). Microfabricated tissue gauges to measure and manipulate forces from 3D microtissues. Proceedings of the National Academy of Sciences, 106(25), 10097-10102. https://doi.org/10.1073/pnas.090017410 
+<a name="ref4"></a> [4] Legant, Wesley R. et al. (2009). Microfabricated tissue gauges to measure and manipulate forces from 3D microtissues. Proceedings of the National Academy of Sciences, 106(25), 10097-10102. https://doi.org/10.1073/pnas.0900174106
 
 <!-- MicroBundleCompute Repo
 Dataset when up -->
