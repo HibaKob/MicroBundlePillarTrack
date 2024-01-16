@@ -42,11 +42,11 @@ deprecated warnings suppressed when testing
 * [Project Roadmap](#roadmap)
 * [Installation Instructions](#install)
 * [Tutorial](#tutorial)
-<!-- * [Comparison to Available Tools](#comparison) -->
 * [To-Do List](#todo)
 * [References to Related Work](#references)
 * [Contact Information](#contact)
 * [Acknowledgements](#acknowledge)
+<!-- * [Comparison to Available Tools](#comparison) -->
 
 ## Project Summary <a name="summary"></a>
 The MicroBundlePillarTrack software is an adaptation of [MicroBundleCompute](https://github.com/HibaKob/MicroBundleCompute) software and is developed specifically for tracking the deformation of the pillars or posts of beating microbundles in brightfield movies. We consider two types of pillar-based microbundle platforms: `1)` "Type 1" which consist of standard experimental microbundle platforms termed microbundle strain gauges and `2)` "Type 2" experimental platforms which correspond to non-standard platforms termed FibroTUGs as described in detail in [[1](#ref1)] and [[2](#ref2)]. In this repository, we share the source code, steps to download and install the software, and tutorials on how to run its different functionalities. 
@@ -289,7 +289,13 @@ As demonstrated here, the entire tracking and visualization process is fully aut
 To ensure that tracking is performed with respect to a fully relaxed tissue (i.e. a valley frame), we implement, within our computational pipeline, two functions, ``check_frame0_valley`` and ``adjust_first_valley``, that check whether or not the input movie begins at a valley frame and automatically adjust the movie to begin at one, if required. A user warning is issued when the movie is adjusted specifying the new starting frame. The adjusted frame list is saved into the ``movie`` folder while the original frame files are retained in the ``unadjusted_movie`` folder. 
 
 #### Drift correction <a name="split"></a>
-From our extensive experience with mainly brightfield movies of beating microbundles, 
+From our extensive experience analyzing mainly brightfield movies of beating microbundles, a number of examples display non-trivial drift in the tracked results due to 
+
+temporal segmentation is an essential part of our pipeline as we use it to work around
+the tracked feature drift observed over the duration of the movie
+
+displayed non-trivial drift and required the temporal segmentation step. We attribute
+this difference to the out-of-plane motion
 
 #### Tissue stress computation  <a name="compute_stress"></a>
 
