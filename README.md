@@ -289,13 +289,9 @@ As demonstrated here, the entire tracking and visualization process is fully aut
 To ensure that tracking is performed with respect to a fully relaxed tissue (i.e. a valley frame), we implement, within our computational pipeline, two functions, ``check_frame0_valley`` and ``adjust_first_valley``, that check whether or not the input movie begins at a valley frame and automatically adjust the movie to begin at one, if required. A user warning is issued when the movie is adjusted specifying the new starting frame. The adjusted frame list is saved into the ``movie`` folder while the original frame files are retained in the ``unadjusted_movie`` folder. 
 
 #### Drift correction <a name="split"></a>
-From our extensive experience analyzing mainly brightfield movies of beating microbundles, a number of examples display non-trivial drift in the tracked results due to 
+From our extensive experience analyzing mainly brightfield movies of beating microbundles, a number of examples display non-trivial drift in the tracked results mainly due to imaging noise. We remove this drift by performing temporal segmentation into individual peaks, where the first frame of each beat is considered to be the reference for all output calculations within the beat. 
 
-temporal segmentation is an essential part of our pipeline as we use it to work around
-the tracked feature drift observed over the duration of the movie
-
-displayed non-trivial drift and required the temporal segmentation step. We attribute
-this difference to the out-of-plane motion
+We note that drift correction is not performed automatically; instead, a warning is issued to the user who can later decide whether or not to repeat tracking with beat splitting by setting the ``split`` input parameter to ``True``. In some cases, high drift is caused by imaging artifacts such as shadows or degraded image quality that cannot be eliminated by splitting. When this happens, a warning is given to the user that drift is still present in the tracked results and that it is recommended to analyze only a portion of the movie. It is critical that a minimum of 3 beats is present in any movie to enable automatic analysis and carrying out the necessary adjustments and corrections. 
 
 #### Tissue stress computation  <a name="compute_stress"></a>
 
@@ -311,6 +307,11 @@ And it will automatically run the example specified by the ``files/tutorial_exam
 
 ### Understanding the output files
 <!-- systematically mask 1: left mask 2: right -->
+
+<!-- After identifying individual beats, we split, based on the first and last beat frame 
+numbers, the main two arrays storing column (horizontal) and row (vertical) locations of 
+marker points obtained during preliminary tracking into multiple arrays corresponding 
+to each segmented beat.  -->
 ### Understanding the visualization results <a name="results"></a>
 
 <!-- <p align = "center">
