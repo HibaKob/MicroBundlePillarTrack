@@ -429,7 +429,7 @@ The outputs of running the visualization code will be stored in the ``pillar_vis
 </p>
 
 <p align = "center">
-<img alt="pillar time intervals" src="tutorials/files/figs/visualizations/pillar_time_intervals.png" width="35%"/>
+<img alt="pillar time intervals" src="tutorials/files/figs/visualizations/pillar_time_intervals.png" width="40%"/>
 &nbsp;
 <img alt="pillar velocity" src="tutorials/files/figs/visualizations/pillar_velocity_results.png" width="45%"/>
 </p>
