@@ -424,8 +424,8 @@ The outputs of running the visualization code will be stored in the ``pillar_vis
 
 <p align = "center">
 <img alt="pillar directional displacement visualization" src="tutorials/files/figs/visualizations/pillar_directional_displacement.png" width="100%" />
-<img alt="pillar stress" src="tutorials/files/figs/visualizations/tissue_stress.pdf" width="100%" />
-<img alt="pillar velocity" src="tutorials/files/figs/visualizations/pillar_velocity_results.pdf" width="100%" />
+<img alt="pillar stress" src="tutorials/files/figs/visualizations/tissue_stress.png" width="100%" />
+<img alt="pillar velocity" src="tutorials/files/figs/visualizations/pillar_velocity_results.png" width="100%" />
 </p>
 
 
