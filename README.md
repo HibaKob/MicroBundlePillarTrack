@@ -423,6 +423,7 @@ Finally, the ``pillar%i_pillar_velocity.txt`` file stores the rate of contractio
 The outputs of running the visualization code will be stored in the ``pillar_visualizations`` folder. Six timeseries plots should be contained here: ``pillar_directional_displacement.pdf``, ``pillar_mean_absolute_displacement.pdf``, ``pillar_force_absolute.pdf``, ``tissue_stress.pdf``, ``pillar_time_intervals.pdf``, and ``pillar_velocity_results.pdf``. These plots correspond to the variation of the pillar mean row and column displacements, pillar mean absolute displacement, pillar absolute force, and mean tissue stress with respect to frame number, as well as full width at half and 80 maximum and pillar contraction and relaxation velocity with respect to time (s), respectively. We note that the results of the two tracked pillars will be visualized on the same plots except for ``tissue_stress`` which is taken as the average of the two pillar results. We include below 3 example output plots. 
 
 <p align = "left">
+&nbsp; &nbsp; &nbsp; &nbsp;
 <img alt="pillar directional displacement visualization" src="tutorials/files/figs/visualizations/pillar_directional_displacement.png" width="45%" />
 &nbsp; &nbsp; &nbsp; &nbsp;
 <img alt="pillar velocity" src="tutorials/files/figs/visualizations/pillar_velocity_results.png" width="45%" />
