@@ -52,7 +52,7 @@ deprecated warnings suppressed when testing
 The MicroBundlePillarTrack software is an adaptation of [MicroBundleCompute](https://github.com/HibaKob/MicroBundleCompute) software and is developed specifically for tracking the deformation of the pillars or posts of beating microbundles in brightfield movies. We consider two types of pillar-based microbundle platforms: `1)` "Type 1" which consist of standard experimental microbundle platforms termed microbundle strain gauges and `2)` "Type 2" experimental platforms which correspond to non-standard platforms termed FibroTUGs as described in detail in [[1](#ref1)] and [[2](#ref2)]. In this repository, we share the source code, steps to download and install the software, and tutorials on how to run its different functionalities. 
 
 
-As with MicroBundleCompute, MicroBundlePillarTrack requires two main inputs: `1)` two seperate binary masks for each of the microbundle pillars or posts and `2)` consecutive movie frames of the beating microbundle. Within our pipeline, the pillar masks are gerenated automatically by either implementing a straightforward threshold based segmentation or by employing a fine-tuned version of the [Segment Anything Model (SAM)](https://github.com/facebookresearch/segment-anything)[[3](#ref3)]. Nevertheless, we retain the option for the user to input a manually or externally generated mask in case both of our automated approaches fail. Following pillar segmentation, fiducial markers identified as Shi-Tomasi corner points are computed on the first frame of the movie and tracked across all frames. From this preliminary tracking, we can identify whether or not the microbundle movie starts from a fully relaxed position (valley frame), identify the first valley frame if it is different from frame 0 (first frame), and adjust the movie accordingly. By tracking the adjusted movie, we obtain pillar positions across consecutive frames, and subsequently, we are able to compute the pillars' mean directional and absolute displacements. Additional derived outputs include microbundle twitch force and stress results, and temporal outputs that include pillar contraction and relaxation velocities as well as full width (or duration) at half maximum (FWHM) and full width (or duration) at 90 maximum (FW90M).
+As with MicroBundleCompute, MicroBundlePillarTrack requires two main inputs: `1)` two seperate binary masks for each of the microbundle pillars or posts and `2)` consecutive movie frames of the beating microbundle. Within our pipeline, the pillar masks are gerenated automatically by either implementing a straightforward threshold based segmentation or by employing a fine-tuned version of the [Segment Anything Model (SAM)](https://github.com/facebookresearch/segment-anything)[[3](#ref3)]. Nevertheless, we retain the option for the user to input a manually or externally generated mask in case both of our automated approaches fail. Following pillar segmentation, fiducial markers identified as Shi-Tomasi corner points are computed on the first frame of the movie and tracked across all frames. From this preliminary tracking, we can identify whether or not the microbundle movie starts from a fully relaxed position (valley frame), identify the first valley frame if it is different from frame 0 (first frame), and adjust the movie accordingly. By tracking the adjusted movie, we obtain pillar positions across consecutive frames, and subsequently, we are able to compute the pillars' mean directional and absolute displacements. Additional derived outputs include microbundle twitch force and stress results, and temporal outputs that include pillar contraction and relaxation velocities as well as full width (or duration) at half maximum (FWHM) and full width (or duration) at 80 maximum (FW80M).
 
 We are also adding new functionalities to the code as well as enhancing the software based on user feedback. Please check our [to-do list]((#todo)).
 
@@ -305,7 +305,7 @@ Once the software is [installed](#install) and the data is set up according to t
 python run_code_pillar.py files/tutorial_example
 ```
 
-And it will automatically run the example specified by the ``files/tutorial_example`` folder and the associated visualization function. You can use the ``run_code_pillar.py`` to run your own code, you just need to specify a relative path between your current working directory (i.e., the directory that your ``Terminal`` is in) and the data that you want to analyze. Alternatively, you can modify ``run_code_pillar.py`` to make running code more conveneint (i.e., remove command line arguments, skip some steps). Here is how the outputs of the code will be structured (in the same folder as input ``movie``):
+And it will automatically run the example specified by the ``files/tutorial_example`` folder and the associated visualization function. You can use the ``run_code_pillar.py`` to run your own code, you just need to specify a relative path between your current working directory (i.e., the directory that your ``Terminal`` is in) and the data that you want to analyze. Alternatively, you can modify ``run_code_pillar.py`` to make running the code more conveneint (i.e., remove command line arguments, skip some steps). Here is how the outputs of the code will be structured (in the same folder as input ``movie``):
 
 ```bash
 |___ example_data
@@ -347,13 +347,78 @@ And it will automatically run the example specified by the ``files/tutorial_exam
 |                |___"tissue_stress.pdf"
 ```
 
-### Understanding the output files
-<!-- systematically mask 1: left mask 2: right -->
+We note that we systematically denote the left pillar as ``pillar1`` and the right one as ``pillar2`` and accordingly, ``pillar_mask_1`` corresponds to the left pillar while ``pillar_mask_2`` corresponds to the right one.
 
-<!-- After identifying individual beats, we split, based on the first and last beat frame 
-numbers, the main two arrays storing column (horizontal) and row (vertical) locations of 
-marker points obtained during preliminary tracking into multiple arrays corresponding 
-to each segmented beat.  -->
+### Understanding the output files
+The outputs of running the software will be stored in the ``pillar_results`` folder as text files. This folder contains 8 ``"info"`` text files: ``orientation_info.txt``, ``pillar%i_beat_peaks.txt``, ``pillar%i_info.txt``, ``pillar%i_pillar_contraction_vel_info.txt``, and ``pillar%i_pillar_relaxation_vel_info.txt``, ``pillar%i_t50_beat_width_info.txt``, ``pillar%i_t80_beat_width_info.txt``, and ``tissue_width_info.txt``.
+
+
+The ``orientation_info.txt`` file stores information regarding the orientation of the unit vector connecting the pillar centroids (left pillar to the right one) with respect to the horizontal direction. It has three columns. Column 0 refers to the horizontal component of the direction vector while column 1 refers to its vertical component assuming that the origin of the orthonormal system is the bottom left corner of the frame. Column 2 refers to the angle (in radians) that this direction vector makes with the horizontal, with positive angles taken in the counterclockwise direction. For example, ``orientation_info.txt`` could contain:
+```bash
+1 0 0
+```
+
+This means that the unit vector along the line connecting the pillar centroids aligns with the horizontal direction (1,0) and as such makes an angle of 0 with it. 
+
+The ``pillar%i_beat_peaks.txt`` file contains the frame numbers at which beat peaks are identified and is outputted for each pillar. These frame numbers are in reference to the adjusted movie (or alternatively the original movie if it starts from a valley frame) 0 indexed. The file would have as many rows as the number of identified peaks. For example, ``pillar1_beat_peaks.txt`` could contain:
+```bash
+16
+40
+64
+88
+```
+This means that the first identified beat peak occurs at frame 16, the second beat peak occurs at frame 40, and so on. 
+
+The ``pillar%i_info.txt`` file stores information pertaining to beat identification and segmentaion and is unique for each pillar. It has three columns. Column 0 refers to the ``beat_number`` (e.g., beat 0 is the first beat, beat 1 is the second beat etc.). Column 1 refers to the ``first_frame`` of each beat. Column 2 refers to the ``last_frame`` of each beat. These will be the frame numbers in the adjusted movie (or alternatively the original movie if it starts from a valley frame) 0 indexed. For example, ``pillar1_info.txt`` could contain:
+
+```bash
+0 3 25
+1 25 49
+2 49 72
+```
+
+This means that beat 0 starts at frame 3 and ends at frame 25, beat 1 starts at frame 25 and ends at frame 49, and beat 2 starts at frame 49 and ends at frame 72. Note that if full beats cannot be segmented from the timeseries data there may be issues with running the code. Often, the visually apparent first and last beats will be excluded from this segmentation because we cannot identify clear start and end points.
+
+
+The files ``pillar%i_pillar_contraction_vel_info.txt`` and ``pillar%i_pillar_relaxation_vel_info.txt`` contain the frame numbers with respect to the adjusted movie (or alternatively the original movie if it starts from a valley frame) 0 indexed, at which the maximum (peak) contraction or relaxation velocity occur respectively, for each pillar. Each file would have as many rows as the number of identified contraction or relaxation maxima. For example, either ``pillar1_pillar_contraction_vel_info.txt`` or  ``pillar1_pillar_relaxation_vel_info.txt`` could contain:
+
+```bash
+12
+36
+60
+84
+```
+
+This means that peak velocities, while the microbundle is contracting or relaxing, occur at frames 12, 36, 60, and 84.
+
+The files ``pillar%i_t50_beat_width_info.txt`` and ``pillar%i_t80_beat_width_info.txt`` store information pertaining to the full width at half maximum (FWHM) and full width at 80 maximum (FW80M), respectively, for each pillar. Each of the two files contains 4 rows. Row 0 refers to the ``full_width`` of each beat at either half maximum or 80 maximum. Row 1 refers to ``width_heights``, the value of the height (magnitude) of the mean absolute displacement at which the widths were evaluated in pixels. Rows 2 and 3 refer to the ``left_ips`` and ``right_ips``, the interpolated positions of the left and right intersection points of a horizontal line at the evaluation height, respectively. We note that the values of widths and interpolated positions are given as frame numbers with respect to the adjusted movie (or alternatively the original movie if it starts from a valley frame) 0 indexed. Each of these files is expected to have dimension ``4 x BB``, where BB corresponds to the number of beats. For example, the ``pillar1_t50_beat_width_info.txt`` or  ``pillar1_t80_beat_width_info.txt`` file could contain:
+
+```bash
+5.9 5.8 5.9 5.9
+0.6 0.5 0.5 0.5
+13.3 37.4 61.3 85.7
+19.2 43.2 67.2 91.6
+```
+
+This means that for the 4 identified beats, the full width at either 50 or 80 maximum (depending on the text file being examined) is 5.9 frames for beat 0, 5.8 frames for beat 1, and 5.9 frames for beats 2 and 3 respectively. The value of the mean absolute displacement at which each of these widths was evaluated are 0.6, 0.5, 0.5, and 0.5 pixels respectively. Finally, a horizontal line extended at the evaluation height intersects beat 0 at frames 13.3 and 19.2, corresponding to a full width of 5.9 frames, beat 1 at frames 37.4 and 43.2 (resulting in a full width of 5.8 frames), beat 2 at frames 61.3 and 67.2 (resulting in a full width of 5.9 frames), and beat 3 at frames 85.7 and 91.6 (resulting in a full width of 5.9 frames).  
+
+Finally, the ``tissue_width_info.txt`` contains two values correspoding to the tissue width (in the row direction) measured at the center of the tissue mask. The first value is saved in units of pixels while the second one is in $\mu$ m.
+
+Aside from the ``info`` text files, the ``"row"`` and ``"col"`` files contain information regarding the row and column positions of the tracked marker (fiducial) points. For default pillar tracking without time segmentation, there will be one row-position file and one col-position file for the entire movie for each tracked pillar. Specifically:
+* ``pillar%i_row.txt`` will contain the image row positions of each marker for the pillar specified by ``%i``
+* ``pillar%i_col.txt`` will contain the image column positions of each marker for the pillar specified by ``%i``
+However, if the optional time segmentation step is run to remove any drift present in the tracked pillar results, there will be one row-position file and one col-position file for each beat as follows: 
+* ``pillar%i_beat%i_row.txt`` will contain the image row positions of each marker for the pillar specified by ``%i`` and beat ``%i``
+* ``pillar%i_beat%i_col.txt`` will contain the image column positions of each marker for the pillar specified by ``%i``  and beat ``%i``
+
+In these text files, the rows correspond to individual markers, while the columns correspond to the frames. For example, if a file has dimension ``AA x BB``, there will be ``AA`` markers and ``BB`` frames. For tracking without time segmentation, the number of frames will correspond to the total number of frames tracked, while for tracking with time segmentation, the number of frames will be the number of frames per beat. 
+
+The ``pillar%i_pillar_force_abs.txt``, ``pillar%i_pillar_force_row.txt``, and ``pillar%i_pillar_force_col.txt`` files will store results (in pixels) corresponding to the mean absolute pillar force, mean pillar force in the row direction, and mean pillar force in the column direction respectively for each pillar. The files store timeseries results and have lengths equal to the number of input movie frames when time segmentaion is skipped. Alternatively, if time segmentation is implemented, the timeseries results will have a length equal to the number of frames corresponding to the tracked beats (i.e. excluding the first and last beats). 
+
+Similarly, the ``tissue_stress.txt`` file will store the calculated tissue stress (in MPa) based on the average mean absolute force of the two pillars. Again, the file stores a timeseries result of length equal to the number of input movie frames when time segmentaion is skipped, and a length equal to the number of frames corresponding to the tracked beats (i.e. excluding the first and last beats) if time segmentation is implemented. 
+
+Finally, the ``pillar%i_pillar_velocity.txt`` file stores the rate of contraction and relaxation of the microbundle in units of $\mu$ m/second, as computed at each pillar. The length of the timeseries result stored in this file is equal to the number of input movie frames minus the moving mean window size, when time segmentaion is skipped. Alternatively, if time segmentation is implemented, the timeseries results will have a length equal to the number of frames corresponding to the tracked beats (i.e. excluding the first and last beats) minus the moving mean window size. For example, if 200 frames are tracked and the moving mean window size is 3, the length of the velocity timeseries will be 197.  
+
 ### Understanding the visualization results <a name="results"></a>
 
 <!-- <p align = "center">
