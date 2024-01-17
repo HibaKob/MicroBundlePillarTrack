@@ -451,8 +451,8 @@ In all cases, the output visualizations are stored as ``.pdf`` files for higher 
 
 <a name="ref4"></a> [4] Legant, Wesley R. et al. (2009). Microfabricated tissue gauges to measure and manipulate forces from 3D microtissues. Proceedings of the National Academy of Sciences, 106(25), 10097-10102. https://doi.org/10.1073/pnas.0900174106
 
-<!-- MicroBundleCompute Repo
-Dataset when up -->
+Related repositories include:
+* https://github.com/HibaKob/MicroBundleCompute
 
 ## Contact Information <a name="contact"></a>
 For additional information, please contact Emma Lejeune ``elejeune@bu.edu`` or Hiba Kobeissi ``hibakob@bu.edu``.
