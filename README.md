@@ -111,7 +111,8 @@ Note that once you have created this virtual environment you can ``activate`` an
 pip install -e .
 ```
 4. If you would like to see what packages were installed, you can type ``pip list``
-5. You can test that the code is working with pytest (all tests should pass):
+5. Download the finetuned SAM checkpoints for pillar mask segmentation [here][https://drive.google.com/drive/folders/1ndoDFfpvI3UX-hUGS7yxpgE2KCu497GJ?usp=share_link] and save them in the ``src`` ()folder. 
+6. You can test that the code is working with pytest (all tests should pass):
 ```bash
 pytest -v --cov=microbunlepillartrack  --cov-report term-missing
 ```
