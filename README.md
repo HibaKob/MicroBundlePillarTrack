@@ -111,7 +111,7 @@ Note that once you have created this virtual environment you can ``activate`` an
 pip install -e .
 ```
 4. If you would like to see what packages were installed, you can type ``pip list``
-5. Download the finetuned SAM checkpoints for pillar mask segmentation [here][https://drive.google.com/drive/folders/1ndoDFfpvI3UX-hUGS7yxpgE2KCu497GJ?usp=share_link] and save them in the ``src`` ()folder. 
+5. Download the finetuned SAM checkpoints for pillar mask segmentation from [here](https://drive.google.com/drive/folders/1ndoDFfpvI3UX-hUGS7yxpgE2KCu497GJ?usp=share_link) and save them in the ``src/microbundlepillartrack`` folder. It is critical that the downloaded checkpoints, ``microbundle_SAM_Type1_pillars.pth`` and ``microbundle_SAM_Type2_pillars.pth`` are saved in the same folder as the python script ``create_pillar_mask.py``. We do not include these checkpoint files within this repository due to file size restrictions on GitHub. 
 6. You can test that the code is working with pytest (all tests should pass):
 ```bash
 pytest -v --cov=microbunlepillartrack  --cov-report term-missing
