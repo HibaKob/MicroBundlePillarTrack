@@ -114,7 +114,7 @@ pip install -e .
 <!-- 5. Download the finetuned SAM checkpoints for pillar mask segmentation from [here](https://drive.google.com/drive/folders/1ndoDFfpvI3UX-hUGS7yxpgE2KCu497GJ?usp=share_link) and save them in the ``src/microbundlepillartrack`` folder. It is critical that the downloaded checkpoints, ``microbundle_SAM_Type1_pillars.pth`` and ``microbundle_SAM_Type2_pillars.pth`` are saved in the same folder as the python script ``create_pillar_mask.py``. We do not include these checkpoint files within this repository due to file size restrictions on GitHub.  -->
 5. You can test that the code is working with pytest (all tests should pass):
 ```bash
-pytest -v --cov=microbunlepillartrack  --cov-report term-missing
+pytest -v --cov=microbundlepillartrack --cov-report term-missing
 ```
 6. To run the code from the terminal, simply start python (type ``python``) and then type ``from microbundlepillartrack import image_analysis as ia``. For example:
 ```bash
