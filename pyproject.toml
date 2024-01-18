@@ -73,5 +73,5 @@ filterwarnings = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/HibaKob/MicroBundleCompute_PillarTrack"
-"Bug Tracker" = "https://github.com/HibaKob/MicroBundleCompute_PillarTrack/issues"
+"Homepage" = "https://github.com/HibaKob/MicroBundlePillarTrack"
+"Bug Tracker" = "https://github.com/HibaKob/MicroBundlePillarTrack/issues"
