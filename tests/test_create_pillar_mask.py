@@ -616,5 +616,3 @@ def test_run_create_pillar_mask_wrong_type():
         warnings.filterwarnings("ignore", category=DeprecationWarning)
         cpm.run_create_pillar_mask(folder_path,src_path,microbundle_type,fname,frame_num)
     assert len(record) == 1
-
-
