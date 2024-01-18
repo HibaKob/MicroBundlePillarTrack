@@ -618,4 +618,3 @@ def test_run_create_pillar_mask_wrong_type():
     assert len(record) == 1
 
 
-
