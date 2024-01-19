@@ -568,7 +568,7 @@ def test_create_pillar_masks_type2_SAM_fail():
 
 
 def test_save_mask():
-    folder_path = example_path("real_example_pillar_masks")
+    folder_path = example_path("real_example_pillar_mas")
     img_path = glob_movie("real_example_pillar_masks")[0]
     data_path = current_path()
     checkpoint_path = data_path.joinpath('microbundle_SAM_Type1_pillars.pth').resolve()
