@@ -10,7 +10,10 @@ import pytest
 from skimage import morphology
 from skimage.morphology import footprints
 
-
+def current_path():
+    self_path_file = Path(__file__)
+    self_path = self_path_file.resolve().parent  
+    return self_path
 
 def files_path():
     self_path_file = Path(__file__)
@@ -34,7 +37,6 @@ def glob_movie(example_name):
     for name in name_list:
         name_list_path.append(Path(name))
     return name_list
-
 
 def test_check_frame_low_contrast():
     img_low = np.random.rand(250,250)*0.1
@@ -387,8 +389,8 @@ def test_ndarray_image_to_tensor():
 
 
 def test_load_ft_SAM_model():
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
+    data_path = current_path()
+    checkpoint_path = data_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
     gpu = 0
     device = torch.device(gpu if torch.cuda.is_available() else "cpu")
     model_type = "vit_b"
@@ -397,8 +399,8 @@ def test_load_ft_SAM_model():
 
 
 def test_get_embeddings():
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
+    data_path = current_path()
+    checkpoint_path = data_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
     gpu = 0
     device = torch.device(gpu if torch.cuda.is_available() else "cpu")
     model_type = "vit_b"
@@ -427,8 +429,8 @@ def test_get_embeddings():
 
 
 def test_get_pred_mask_prob():
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
+    data_path = current_path()
+    checkpoint_path = data_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
     gpu = 0
     device = torch.device(gpu if torch.cuda.is_available() else "cpu")
     model_type = "vit_b"
@@ -478,8 +480,8 @@ def test_mask_prob_to_binary():
 
 
 def test_segment_microbundle_pillars_SAM():
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
+    data_path = current_path()
+    checkpoint_path = data_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
     gpu = 0
     device = torch.device(gpu if torch.cuda.is_available() else "cpu")
     mean = 100
@@ -495,8 +497,8 @@ def test_segment_microbundle_pillars_SAM():
 
 
 def test_run_microbundle_SAM():
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
+    data_path = current_path()
+    checkpoint_path = data_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
     gpu = 0
     mean = 100
     stdv = 5 
@@ -512,8 +514,8 @@ def test_run_microbundle_SAM():
 
 def test_create_pillar_masks_type1_thresh():
     img_path = glob_movie("real_example_pillar_masks")[0]
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type1_pillars.pth').resolve()
+    data_path = current_path()
+    checkpoint_path = data_path.joinpath('microbundle_SAM_Type1_pillars.pth').resolve()
     gpu = 0
     img = io.imread(img_path)
     closed_mask_1, closed_mask_2 = cpm.create_pillar_masks_type1(img, checkpoint_path, gpu)
@@ -523,8 +525,8 @@ def test_create_pillar_masks_type1_thresh():
 
 def test_create_pillar_masks_type1_SAM():
     img_path = glob_movie("real_example_SAM_type1")[0]
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type1_pillars.pth').resolve()
+    data_path = current_path()
+    checkpoint_path = data_path.joinpath('microbundle_SAM_Type1_pillars.pth').resolve()
     gpu = 0
     img = io.imread(img_path)
     closed_mask_1, closed_mask_2 = cpm.create_pillar_masks_type1(img, checkpoint_path, gpu)
@@ -534,8 +536,8 @@ def test_create_pillar_masks_type1_SAM():
 
 def test_create_pillar_masks_type1_SAM_fail():
     img_path = glob_movie("real_example_SAM_type1_fail")[0]
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type1_pillars.pth').resolve()
+    data_path = current_path()
+    checkpoint_path = data_path.joinpath('microbundle_SAM_Type1_pillars.pth').resolve()
     gpu = 0
     img = io.imread(img_path)
     with pytest.raises(IndexError) as error:
@@ -545,8 +547,8 @@ def test_create_pillar_masks_type1_SAM_fail():
 
 def test_create_pillar_masks_type2_SAM():
     img_path = glob_movie("real_example_SAM_type2")[0]
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
+    data_path = current_path()
+    checkpoint_path = data_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
     gpu = 0
     img = io.imread(img_path)
     closed_mask_1, closed_mask_2 = cpm.create_pillar_masks_type2(img, checkpoint_path, gpu)
@@ -556,8 +558,8 @@ def test_create_pillar_masks_type2_SAM():
 
 def test_create_pillar_masks_type2_SAM_fail():
     img_path = glob_movie("real_example_SAM_type2_fail")[0]
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
+    data_path = current_path()
+    checkpoint_path = data_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
     gpu = 0
     img = io.imread(img_path)
     with pytest.raises(IndexError) as error:
@@ -568,8 +570,8 @@ def test_create_pillar_masks_type2_SAM_fail():
 def test_save_mask():
     folder_path = example_path("real_example_pillar_masks")
     img_path = glob_movie("real_example_pillar_masks")[0]
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type1_pillars.pth').resolve()
+    data_path = current_path()
+    checkpoint_path = data_path.joinpath('microbundle_SAM_Type1_pillars.pth').resolve()
     gpu = 0
     img = io.imread(img_path)
     closed_mask_1, closed_mask_2 = cpm.create_pillar_masks_type1(img, checkpoint_path, gpu)
@@ -582,11 +584,11 @@ def test_save_mask():
 
 def test_run_create_pillar_mask_type1():
     folder_path = example_path("real_example_SAM_type1")
-    src_path = Path('./src/microbundlepillartrack')
+    data_path = current_path()
     microbundle_type = "type1"
     fname = "pillar_mask"
     frame_num = 0
-    file_path_m1, img_path_m1, file_path_m2, img_path_m2 = cpm.run_create_pillar_mask(folder_path,src_path,microbundle_type,fname,frame_num)
+    file_path_m1, img_path_m1, file_path_m2, img_path_m2 = cpm.run_create_pillar_mask(folder_path,data_path,microbundle_type,fname,frame_num)
     assert file_path_m1.is_file()
     assert img_path_m1.is_file()
     assert file_path_m2.is_file()
@@ -595,11 +597,11 @@ def test_run_create_pillar_mask_type1():
 
 def test_run_create_pillar_mask_type2():
     folder_path = example_path("real_example_SAM_type2")
-    src_path = Path('./src/microbundlepillartrack')
+    data_path = current_path()
     microbundle_type = "type2"
     fname = "pillar_mask"
     frame_num = 0
-    file_path_m1, img_path_m1, file_path_m2, img_path_m2 = cpm.run_create_pillar_mask(folder_path,src_path,microbundle_type,fname,frame_num)
+    file_path_m1, img_path_m1, file_path_m2, img_path_m2 = cpm.run_create_pillar_mask(folder_path,data_path,microbundle_type,fname,frame_num)
     assert file_path_m1.is_file()
     assert img_path_m1.is_file()
     assert file_path_m2.is_file()
@@ -608,11 +610,14 @@ def test_run_create_pillar_mask_type2():
 
 def test_run_create_pillar_mask_wrong_type():
     folder_path = example_path("real_example_SAM_type2")
-    src_path = Path('./src/microbundlepillartrack')
+    data_path = current_path()
     microbundle_type = "type3"
     fname = "pillar_mask"
     frame_num = 0
     with warnings.catch_warnings(record=True) as record:
         warnings.filterwarnings("ignore", category=DeprecationWarning)
-        cpm.run_create_pillar_mask(folder_path,src_path,microbundle_type,fname,frame_num)
+        cpm.run_create_pillar_mask(folder_path,data_path,microbundle_type,fname,frame_num)
     assert len(record) == 1
+
+
+
