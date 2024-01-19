@@ -237,7 +237,7 @@ checkpoint_path = Path('/LOCAL_PATH_TO_PACKAGE/MicroBundlePillarTrack/src/microb
 cpm.run_create_pillar_mask(input_folder, checkpoint_path, microbundle_type)
 ```
 
-Finally, if both segmentation approaches fail, the user can still provide externally generated pillar masks. To do this, first the ``cpm.run_create_pillar_mask(input_folder, checkpoint_path, microbundle_type)`` line in the script file should be commented out, and second, a binary text file for each pillar mask saved as ``pillar_mask_1.txt`` and ``pillar_mask_2.txt`` where the mask region is denoted by "1" and the background by "0", should be provided in the ``masks`` folder.
+Finally, if both segmentation approaches fail, the user can still provide externally generated pillar masks. To do this, first the ``cpm.run_create_pillar_mask(input_folder, checkpoint_path, microbundle_type)`` line in the script file should be commented out, and second, a binary text file for each pillar mask saved as ``pillar_mask_1.txt`` and ``pillar_mask_2.txt`` where the mask region is denoted by "1" and the background by "0", should be provided in the ``masks`` folder. An alternative approach would be to finetune the segment anything model (SAM) for your dataset in specific. In the ``finetune_SAM`` folder, we provide an example script to perform this task and share an example training dataset. 
 
 #### Pillar tracking 
 The function ``run_pillar_tracking`` will automatically read the data specified by the input folder (tiff files and mask file), run tracking, and save the results as text files.

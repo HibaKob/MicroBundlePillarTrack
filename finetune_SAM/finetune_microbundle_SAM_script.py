@@ -7,8 +7,7 @@ from torch.utils.data import Dataset, DataLoader
 import torchvision.transforms.functional as TF
 import torchvision.transforms as T
 import monai
-from segment_anything import SamPredictor, sam_model_registry
-from segment_anything.utils.transforms import ResizeLongestSide
+from segment_anything import sam_model_registry
 from pathlib import Path
 import tifffile
 import imageio
@@ -40,11 +39,11 @@ def resize_sequence(img_array, size):
     resized_img_list.append(resized_img)
   return np.array(resized_img_list)
 
-results_path = Path('/projectnb/lejlab2/Hiba/finetune_SAM')
+results_path = Path('/PROVIDE_PATH_TO_SAVE_RESULTS')
 
 """load input images and corresponding masks"""
-all_dataset_paths = sorted(glob.glob("/projectnb/lejlab2/Hiba/finetune_SAM/myDataset_sam/Example*"+".tif"))
-all_mask_paths = sorted(glob.glob("/projectnb/lejlab2/Hiba/finetune_SAM/myDataset_sam/mask_Example*"+".tif"))
+all_dataset_paths = sorted(glob.glob("/PATH_TO_DATASET_EXAMPLE/Example*"+".tif"))
+all_mask_paths = sorted(glob.glob("/PATH_TO_DATASET_EXAMPLE/mask_Example*"+".tif"))
 
 all_resized_images = []
 all_resized_masks = []
