@@ -115,7 +115,7 @@ class SAMDataset(Dataset):
     
 
 model_type = 'vit_b'
-sam_checkpoint = '/projectnb/lejlab2/Hiba/finetune_SAM/sam_vit_b_01ec64.pth'
+sam_checkpoint = '/PATH_TO_CHECKPOINT/sam_vit_b_01ec64.pth'
 gpu = 0
 device = torch.device(gpu if torch.cuda.is_available() else "cpu")
 if torch.cuda.is_available():
