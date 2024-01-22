@@ -1479,3 +1479,4 @@ def test_visualize_interpolate_rotated_small_angle():
     for pa in col_png_path_list:
         assert pa.is_file()
     assert col_gif_path.is_file()
+    
