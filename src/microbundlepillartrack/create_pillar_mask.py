@@ -127,7 +127,7 @@ def coords_to_mask(coords: np.ndarray, array: np.ndarray) -> np.ndarray:
     return mask
 
 
-def close_region(array: np.ndarray, radius: int = 5) -> np.ndarray:
+def close_region(array: np.ndarray, radius: int = 10) -> np.ndarray:
     """Given an array with a small hole. Will return a closed array."""
     footprint = morphology.disk(radius, dtype=bool)
     closed_array = morphology.binary_closing(array, footprint)
