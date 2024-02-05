@@ -57,7 +57,7 @@ We are also adding new functionalities to the code as well as enhancing the soft
 ## Project Roadmap <a name="roadmap"></a>
 In alignment with our long-term goal for developing open-source software for data curation and analysis from mainly brightfield movies of beating cardiac microbundles grown on different experimental constructs, we share here a tool for automated pillar analysis based on the validated [MicroBundleCompute](https://github.com/HibaKob/MicroBundleCompute) software. 
 
-At this point (**January 2024**), we have tested our code on approximately 700 examples provided by 2 different labs who implement different techniques. This allowed us to identify challenging examples for the software and improve our approach. We hope to further expand both our testing dataset and list of contributors. We share the complete dataset and provide more details about it on [Dryad](provide_link_here){UPDATE LINK}.  
+At this point (**January 2024**), we have tested our code on approximately $700$ examples provided by $2$ different labs who implement different techniques. This allowed us to identify challenging examples for the software and improve our approach. We hope to further expand both our testing dataset and list of contributors. We share the complete dataset and provide more details about it on [Dryad](provide_link_here){UPDATE LINK}.  
 
 Specifically, through this collaborative endeavor we plan to proceed with the following roadmap:
 `Preliminary Dataset + Software` $\mapsto$ `Published Software Package and Tutorial` $\mapsto$ `Preliminary Analysis of the Results` $\mapsto$ `Larger Dataset + Software Testing` $\mapsto$ `Statistical Model of Tissue Mechanical Behavior`
@@ -115,7 +115,7 @@ pip install -e .
 pytest -v --cov=microbundlepillartrack --cov-report term-missing
 ```
 
-As indicated with the shared badges above, the MicroBundlePillarTrack software has been tested on $3$ operating systems, macOS, Windows, and Ubuntu with $97\%$ coverage using GitHub Actions. We note that locally, we have tested the software on macOS Montery, Windows XX, and Ubuntu XX with $100\%$ coverage. Due to issues with loading model checkpoints with torch on GitHub, we commented out $11$ testing functions in the `test_create_pillar_mask.py` file found in the `tests` folder. For completeness and to check that the code is running $100\%$ successfully, the user can uncomment these functions and rerun the command above. 
+As indicated with the shared badges above, the MicroBundlePillarTrack software has been tested on 3 operating systems, macOS, Windows, and Ubuntu with 97% coverage using GitHub Actions. We note that locally, we have tested the software on macOS Montery, Windows XX, and Ubuntu XX with 100% coverage. Due to issues with loading model checkpoints with torch on GitHub, we commented out 11 testing functions in the `test_create_pillar_mask.py` file found in the `tests` folder. For completeness and to check that the code is running 100% successfully, the user can uncomment these functions and rerun the command above. 
 
 6. To run the code from the terminal, simply start python (type ``python``) and then type ``from microbundlepillartrack import image_analysis as ia``. For example:
 ```bash
@@ -191,7 +191,7 @@ After running ``tif_sequence_to_TIFF_frames.py``, the folder structure should be
 Aside from the folder structure, the code requires that the frames in the ``movie`` folder span at least 3 beats. We mandate this requirement for better result outputs. 
 
 ### Current core functionalities
-In the current version of the code, there are 3 core functionalities available for pillar tracking (automatic mask generation, tracking, and results visualization). As a brief note, it is not necessary to use all functionalities (e.g., you can still provide an externally generated mask and skip the automatic mask generation step or skip the visualization step).
+In the current version of the code, there are $3$ core functionalities available for pillar tracking (automatic mask generation, tracking, and results visualization). As a brief note, it is not necessary to use all functionalities (e.g., you can still provide an externally generated mask and skip the automatic mask generation step or skip the visualization step).
 
  To be able to run the code, we stress that for the code snippets in this section, the variable ``input_folder`` is a [``PosixPath``](https://docs.python.org/3/library/pathlib.html), as defined [above](#data_prep), pointing to the folder that the user wishes to analyze.
 
