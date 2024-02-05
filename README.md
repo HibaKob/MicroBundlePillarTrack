@@ -5,25 +5,10 @@ We will configure these once we make the repository public:
 
 codecov_token: 1c09c4b5-8acb-4fc8-a222-c31983faab92
 
-[![python](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/)
-![os](https://img.shields.io/badge/os-ubuntu%20|%20macos%20|%20windows-blue.svg)
-[![license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/sandialabs/sibl#license)
-
-
-[![tests](https://github.com/hibakob/microbundlecompute/workflows/coverage_test/badge.svg)](https://github.com/HibaKob/MicroBundlePillarTrack/actions) 
-
-
-[![coverage_test](https://github.com/HibaKob/MicroBundlePillarTrack/actions/workflows/coverage_test.yml/badge.svg?branch=main)](https://github.com/HibaKob/MicroBundlePillarTrack/actions/workflows/coverage_test.yml) [![codecov](https://codecov.io/gh/HibaKob/MicroBundlePillarTrack/graph/badge.svg?token=42GDTITVT0)](https://codecov.io/gh/HibaKob/MicroBundlePillarTrack)
-
-
-
-
 UPDATED functions in image_analysis.py:
 compute_local_coverage
 track_all_steps_with_adjust_param_dicts 
 rotate_test_img (added outputs)
-
-WT_DMSO_2_5: mask of pillar 1 is off (it isn’t visible in the original video): “thresh_size_large” for area<9000 gets rid of wrong pillar 1 (Interesting observation: pillar 1 mask is detected but has higher eccentricity so the region is discarded) — Changes to code: Get 4 roundest regions, sort in order of decreasing area, and get largest 2
 
 user warnings: 
 1. low contrast movie: segmentation might fail
@@ -48,7 +33,7 @@ deprecated warnings suppressed when testing
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/sandialabs/sibl#license)
 
 
-[![coverage_test](https://github.com/HibaKob/MicroBundlePillarTrack/actions/workflows/coverage_test.yml/badge.svg?branch=main)](https://github.com/HibaKob/MicroBundlePillarTrack/actions/workflows/coverage_test.yml) [![codecov](https://codecov.io/gh/HibaKob/MicroBundlePillarTrack/graph/badge.svg?token=42GDTITVT0)](https://codecov.io/gh/HibaKob/MicroBundlePillarTrack)
+[![coverage_test](https://github.com/HibaKob/MicroBundlePillarTrack/actions/workflows/coverage_test.yml/badge.svg?branch=master)](https://github.com/HibaKob/MicroBundlePillarTrack/actions/workflows/coverage_test.yml) [![codecov](https://codecov.io/gh/HibaKob/MicroBundlePillarTrack/graph/badge.svg?token=42GDTITVT0)](https://codecov.io/gh/HibaKob/MicroBundlePillarTrack)
 
 ## Table of Contents
 * [Project Summary](#summary)
