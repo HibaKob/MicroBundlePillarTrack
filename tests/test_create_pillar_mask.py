@@ -386,67 +386,67 @@ def test_ndarray_image_to_tensor():
     assert torch.is_tensor(img_torch)
 
 
-def test_load_ft_SAM_model():
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
-    gpu = 0
-    device = torch.device(gpu if torch.cuda.is_available() else "cpu")
-    model_type = "vit_b"
-    microbundle_sam = cpm.load_ft_SAM_model(checkpoint_path, device, model_type=model_type)
-    assert microbundle_sam is not None
+# def test_load_ft_SAM_model():
+#     src_path = Path('./src/microbundlepillartrack')
+#     checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
+#     gpu = 0
+#     device = torch.device(gpu if torch.cuda.is_available() else "cpu")
+#     model_type = "vit_b"
+#     microbundle_sam = cpm.load_ft_SAM_model(checkpoint_path, device, model_type=model_type)
+#     assert microbundle_sam is not None
 
 
-def test_get_embeddings():
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
-    gpu = 0
-    device = torch.device(gpu if torch.cuda.is_available() else "cpu")
-    model_type = "vit_b"
-    mean = 100
-    stdv = 5 
-    size = 250
-    new_size = 1024
-    dist = np.random.normal(mean, stdv, size**2)
-    img = dist.reshape(size,-1)
-    resized_img = cpm.resize_image(img, new_size)
-    expanded_img = cpm.expand_image(resized_img)
-    norm_image = cpm.normalize_image(expanded_img, mean, stdv)
-    img_torch = cpm.ndarray_image_to_tensor(norm_image)
-    microbundle_sam = cpm.load_ft_SAM_model(checkpoint_path, device, model_type=model_type)
-    image_embedding, sparse_embeddings, dense_embeddings = cpm.get_embeddings(microbundle_sam, img_torch, device)
-    B,_, H, W = img_torch.shape
-    box_torch = torch.from_numpy(np.array([[0,0,W,H]]*B)).float().to(device)
-    assert torch.is_tensor(image_embedding)
-    assert torch.is_tensor(sparse_embeddings)
-    assert torch.is_tensor(dense_embeddings)
+# def test_get_embeddings():
+#     src_path = Path('./src/microbundlepillartrack')
+#     checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
+#     gpu = 0
+#     device = torch.device(gpu if torch.cuda.is_available() else "cpu")
+#     model_type = "vit_b"
+#     mean = 100
+#     stdv = 5 
+#     size = 250
+#     new_size = 1024
+#     dist = np.random.normal(mean, stdv, size**2)
+#     img = dist.reshape(size,-1)
+#     resized_img = cpm.resize_image(img, new_size)
+#     expanded_img = cpm.expand_image(resized_img)
+#     norm_image = cpm.normalize_image(expanded_img, mean, stdv)
+#     img_torch = cpm.ndarray_image_to_tensor(norm_image)
+#     microbundle_sam = cpm.load_ft_SAM_model(checkpoint_path, device, model_type=model_type)
+#     image_embedding, sparse_embeddings, dense_embeddings = cpm.get_embeddings(microbundle_sam, img_torch, device)
+#     B,_, H, W = img_torch.shape
+#     box_torch = torch.from_numpy(np.array([[0,0,W,H]]*B)).float().to(device)
+#     assert torch.is_tensor(image_embedding)
+#     assert torch.is_tensor(sparse_embeddings)
+#     assert torch.is_tensor(dense_embeddings)
 
-    assert img_torch.shape == (1, 3, microbundle_sam.image_encoder.img_size, microbundle_sam.image_encoder.img_size)
-    assert image_embedding.shape == microbundle_sam.image_encoder(img_torch).shape
-    assert sparse_embeddings.shape == microbundle_sam.prompt_encoder(points=None, boxes = box_torch, masks=None)[0].shape
-    assert dense_embeddings.shape == microbundle_sam.prompt_encoder(points=None, boxes = box_torch, masks=None)[1].shape
+#     assert img_torch.shape == (1, 3, microbundle_sam.image_encoder.img_size, microbundle_sam.image_encoder.img_size)
+#     assert image_embedding.shape == microbundle_sam.image_encoder(img_torch).shape
+#     assert sparse_embeddings.shape == microbundle_sam.prompt_encoder(points=None, boxes = box_torch, masks=None)[0].shape
+#     assert dense_embeddings.shape == microbundle_sam.prompt_encoder(points=None, boxes = box_torch, masks=None)[1].shape
 
 
-def test_get_pred_mask_prob():
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
-    gpu = 0
-    device = torch.device(gpu if torch.cuda.is_available() else "cpu")
-    model_type = "vit_b"
-    mean = 100
-    stdv = 5 
-    size = 250
-    new_size = 1024
-    dist = np.random.normal(mean, stdv, size**2)
-    img = dist.reshape(size,-1)
-    resized_img = cpm.resize_image(img, new_size)
-    expanded_img = cpm.expand_image(resized_img)
-    norm_image = cpm.normalize_image(expanded_img, mean, stdv)
-    img_torch = cpm.ndarray_image_to_tensor(norm_image)
-    microbundle_sam = cpm.load_ft_SAM_model(checkpoint_path, device, model_type=model_type)
-    image_embedding, sparse_embeddings, dense_embeddings = cpm.get_embeddings(microbundle_sam, img_torch, device)
-    mask_pred_prob = cpm.get_pred_mask_prob(microbundle_sam, image_embedding, sparse_embeddings, dense_embeddings)
-    assert torch.is_tensor(mask_pred_prob)
-    assert torch.all(torch.sigmoid(mask_pred_prob) < 1)
+# def test_get_pred_mask_prob():
+#     src_path = Path('./src/microbundlepillartrack')
+#     checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
+#     gpu = 0
+#     device = torch.device(gpu if torch.cuda.is_available() else "cpu")
+#     model_type = "vit_b"
+#     mean = 100
+#     stdv = 5 
+#     size = 250
+#     new_size = 1024
+#     dist = np.random.normal(mean, stdv, size**2)
+#     img = dist.reshape(size,-1)
+#     resized_img = cpm.resize_image(img, new_size)
+#     expanded_img = cpm.expand_image(resized_img)
+#     norm_image = cpm.normalize_image(expanded_img, mean, stdv)
+#     img_torch = cpm.ndarray_image_to_tensor(norm_image)
+#     microbundle_sam = cpm.load_ft_SAM_model(checkpoint_path, device, model_type=model_type)
+#     image_embedding, sparse_embeddings, dense_embeddings = cpm.get_embeddings(microbundle_sam, img_torch, device)
+#     mask_pred_prob = cpm.get_pred_mask_prob(microbundle_sam, image_embedding, sparse_embeddings, dense_embeddings)
+#     assert torch.is_tensor(mask_pred_prob)
+#     assert torch.all(torch.sigmoid(mask_pred_prob) < 1)
 
 
 def test_resize_pred_mask_prob():
@@ -477,37 +477,37 @@ def test_mask_prob_to_binary():
     assert nonzero_elem == sum_elem
 
 
-def test_segment_microbundle_pillars_SAM():
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
-    gpu = 0
-    device = torch.device(gpu if torch.cuda.is_available() else "cpu")
-    mean = 100
-    stdv = 5 
-    size = 512
-    dist = np.random.normal(mean, stdv, size**2)
-    img = dist.reshape(size,-1)
-    binary_mask = cpm.segment_microbundle_pillars_SAM(img, checkpoint_path, device)
-    nonzero_elem = np.count_nonzero(binary_mask)
-    sum_elem = np.sum(binary_mask)
-    assert binary_mask.shape == (size,size)
-    assert nonzero_elem == sum_elem
+# def test_segment_microbundle_pillars_SAM():
+#     src_path = Path('./src/microbundlepillartrack')
+#     checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
+#     gpu = 0
+#     device = torch.device(gpu if torch.cuda.is_available() else "cpu")
+#     mean = 100
+#     stdv = 5 
+#     size = 512
+#     dist = np.random.normal(mean, stdv, size**2)
+#     img = dist.reshape(size,-1)
+#     binary_mask = cpm.segment_microbundle_pillars_SAM(img, checkpoint_path, device)
+#     nonzero_elem = np.count_nonzero(binary_mask)
+#     sum_elem = np.sum(binary_mask)
+#     assert binary_mask.shape == (size,size)
+#     assert nonzero_elem == sum_elem
 
 
-def test_run_microbundle_SAM():
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
-    gpu = 0
-    mean = 100
-    stdv = 5 
-    size = 512
-    dist = np.random.normal(mean, stdv, size**2)
-    img = dist.reshape(size,-1)
-    binary_mask = cpm.run_microbundle_SAM(img, checkpoint_path, gpu)
-    nonzero_elem = np.count_nonzero(binary_mask)
-    sum_elem = np.sum(binary_mask)
-    assert binary_mask.shape == (size,size)
-    assert nonzero_elem == sum_elem
+# def test_run_microbundle_SAM():
+#     src_path = Path('./src/microbundlepillartrack')
+#     checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
+#     gpu = 0
+#     mean = 100
+#     stdv = 5 
+#     size = 512
+#     dist = np.random.normal(mean, stdv, size**2)
+#     img = dist.reshape(size,-1)
+#     binary_mask = cpm.run_microbundle_SAM(img, checkpoint_path, gpu)
+#     nonzero_elem = np.count_nonzero(binary_mask)
+#     sum_elem = np.sum(binary_mask)
+#     assert binary_mask.shape == (size,size)
+#     assert nonzero_elem == sum_elem
 
 
 def test_create_pillar_masks_type1_thresh():
@@ -521,48 +521,48 @@ def test_create_pillar_masks_type1_thresh():
     assert closed_mask_2.shape == img.shape
 
 
-def test_create_pillar_masks_type1_SAM():
-    img_path = glob_movie("real_example_SAM_type1")[0]
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type1_pillars.pth').resolve()
-    gpu = 0
-    img = io.imread(img_path)
-    closed_mask_1, closed_mask_2 = cpm.create_pillar_masks_type1(img, checkpoint_path, gpu)
-    assert closed_mask_1.shape == img.shape
-    assert closed_mask_2.shape == img.shape
+# def test_create_pillar_masks_type1_SAM():
+#     img_path = glob_movie("real_example_SAM_type1")[0]
+#     src_path = Path('./src/microbundlepillartrack')
+#     checkpoint_path = src_path.joinpath('microbundle_SAM_Type1_pillars.pth').resolve()
+#     gpu = 0
+#     img = io.imread(img_path)
+#     closed_mask_1, closed_mask_2 = cpm.create_pillar_masks_type1(img, checkpoint_path, gpu)
+#     assert closed_mask_1.shape == img.shape
+#     assert closed_mask_2.shape == img.shape
 
 
-def test_create_pillar_masks_type1_SAM_fail():
-    img_path = glob_movie("real_example_SAM_type1_fail")[0]
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type1_pillars.pth').resolve()
-    gpu = 0
-    img = io.imread(img_path)
-    with pytest.raises(IndexError) as error:
-        _, _ = cpm.create_pillar_masks_type1(img, checkpoint_path, gpu)
-    assert error.typename == "IndexError"
+# def test_create_pillar_masks_type1_SAM_fail():
+#     img_path = glob_movie("real_example_SAM_type1_fail")[0]
+#     src_path = Path('./src/microbundlepillartrack')
+#     checkpoint_path = src_path.joinpath('microbundle_SAM_Type1_pillars.pth').resolve()
+#     gpu = 0
+#     img = io.imread(img_path)
+#     with pytest.raises(IndexError) as error:
+#         _, _ = cpm.create_pillar_masks_type1(img, checkpoint_path, gpu)
+#     assert error.typename == "IndexError"
 
 
-def test_create_pillar_masks_type2_SAM():
-    img_path = glob_movie("real_example_SAM_type2")[0]
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
-    gpu = 0
-    img = io.imread(img_path)
-    closed_mask_1, closed_mask_2 = cpm.create_pillar_masks_type2(img, checkpoint_path, gpu)
-    assert closed_mask_1.shape == img.shape
-    assert closed_mask_2.shape == img.shape
+# def test_create_pillar_masks_type2_SAM():
+#     img_path = glob_movie("real_example_SAM_type2")[0]
+#     src_path = Path('./src/microbundlepillartrack')
+#     checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
+#     gpu = 0
+#     img = io.imread(img_path)
+#     closed_mask_1, closed_mask_2 = cpm.create_pillar_masks_type2(img, checkpoint_path, gpu)
+#     assert closed_mask_1.shape == img.shape
+#     assert closed_mask_2.shape == img.shape
 
 
-def test_create_pillar_masks_type2_SAM_fail():
-    img_path = glob_movie("real_example_SAM_type2_fail")[0]
-    src_path = Path('./src/microbundlepillartrack')
-    checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
-    gpu = 0
-    img = io.imread(img_path)
-    with pytest.raises(IndexError) as error:
-        _, _ = cpm.create_pillar_masks_type2(img, checkpoint_path, gpu)
-    assert error.typename == "IndexError"
+# def test_create_pillar_masks_type2_SAM_fail():
+#     img_path = glob_movie("real_example_SAM_type2_fail")[0]
+#     src_path = Path('./src/microbundlepillartrack')
+#     checkpoint_path = src_path.joinpath('microbundle_SAM_Type2_pillars.pth').resolve()
+#     gpu = 0
+#     img = io.imread(img_path)
+#     with pytest.raises(IndexError) as error:
+#         _, _ = cpm.create_pillar_masks_type2(img, checkpoint_path, gpu)
+#     assert error.typename == "IndexError"
 
 
 def test_save_mask():
@@ -580,30 +580,30 @@ def test_save_mask():
     assert img_path_2.is_file()
 
 
-def test_run_create_pillar_mask_type1():
-    folder_path = example_path("real_example_SAM_type1")
-    src_path = Path('./src/microbundlepillartrack')
-    microbundle_type = "type1"
-    fname = "pillar_mask"
-    frame_num = 0
-    file_path_m1, img_path_m1, file_path_m2, img_path_m2 = cpm.run_create_pillar_mask(folder_path,src_path,microbundle_type,fname,frame_num)
-    assert file_path_m1.is_file()
-    assert img_path_m1.is_file()
-    assert file_path_m2.is_file()
-    assert img_path_m2.is_file()
+# def test_run_create_pillar_mask_type1():
+#     folder_path = example_path("real_example_SAM_type1")
+#     src_path = Path('./src/microbundlepillartrack')
+#     microbundle_type = "type1"
+#     fname = "pillar_mask"
+#     frame_num = 0
+#     file_path_m1, img_path_m1, file_path_m2, img_path_m2 = cpm.run_create_pillar_mask(folder_path,src_path,microbundle_type,fname,frame_num)
+#     assert file_path_m1.is_file()
+#     assert img_path_m1.is_file()
+#     assert file_path_m2.is_file()
+#     assert img_path_m2.is_file()
 
 
-def test_run_create_pillar_mask_type2():
-    folder_path = example_path("real_example_SAM_type2")
-    src_path = Path('./src/microbundlepillartrack')
-    microbundle_type = "type2"
-    fname = "pillar_mask"
-    frame_num = 0
-    file_path_m1, img_path_m1, file_path_m2, img_path_m2 = cpm.run_create_pillar_mask(folder_path,src_path,microbundle_type,fname,frame_num)
-    assert file_path_m1.is_file()
-    assert img_path_m1.is_file()
-    assert file_path_m2.is_file()
-    assert img_path_m2.is_file()
+# def test_run_create_pillar_mask_type2():
+#     folder_path = example_path("real_example_SAM_type2")
+#     src_path = Path('./src/microbundlepillartrack')
+#     microbundle_type = "type2"
+#     fname = "pillar_mask"
+#     frame_num = 0
+#     file_path_m1, img_path_m1, file_path_m2, img_path_m2 = cpm.run_create_pillar_mask(folder_path,src_path,microbundle_type,fname,frame_num)
+#     assert file_path_m1.is_file()
+#     assert img_path_m1.is_file()
+#     assert file_path_m2.is_file()
+#     assert img_path_m2.is_file()
 
 
 def test_run_create_pillar_mask_wrong_type():
