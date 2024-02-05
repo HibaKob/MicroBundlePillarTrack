@@ -33,7 +33,7 @@ deprecated warnings suppressed when testing
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/sandialabs/sibl#license)
 
 
-[![coverage_test](https://github.com/HibaKob/MicroBundlePillarTrack/actions/workflows/coverage_test.yml/badge.svg?branch=master)](https://github.com/HibaKob/MicroBundlePillarTrack/actions/workflows/coverage_test.yml) [![codecov](https://codecov.io/gh/HibaKob/MicroBundlePillarTrack/graph/badge.svg?token=42GDTITVT0)](https://codecov.io/gh/HibaKob/MicroBundlePillarTrack)
+[![coverage_test](https://github.com/HibaKob/MicroBundlePillarTrack/actions/workflows/coverage_test.yml/badge.svg?branch=master)](https://github.com/HibaKob/MicroBundlePillarTrack/actions/workflows/coverage_test.yml) [![codecov](https://codecov.io/gh/HibaKob/MicroBundlePillarTrack/branch/master/graph/badge.svg?token=42GDTITVT0)](https://codecov.io/gh/HibaKob/MicroBundlePillarTrack)
 
 ## Table of Contents
 * [Project Summary](#summary)
