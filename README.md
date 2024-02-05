@@ -57,7 +57,7 @@ We are also adding new functionalities to the code as well as enhancing the soft
 ## Project Roadmap <a name="roadmap"></a>
 In alignment with our long-term goal for developing open-source software for data curation and analysis from mainly brightfield movies of beating cardiac microbundles grown on different experimental constructs, we share here a tool for automated pillar analysis based on the validated [MicroBundleCompute](https://github.com/HibaKob/MicroBundleCompute) software. 
 
-At this point (**January 2024**), we have tested our code on approximately $700$ examples provided by $2$ different labs who implement different techniques. This allowed us to identify challenging examples for the software and improve our approach. We hope to further expand both our testing dataset and list of contributors. We share the complete dataset and provide more details about it on [Dryad](provide_link_here){UPDATE LINK}.  
+At this point (**January 2024**), we have tested our code on approximately 700 examples provided by 2 different labs who implement different techniques. This allowed us to identify challenging examples for the software and improve our approach. We hope to further expand both our testing dataset and list of contributors. We share the complete dataset and provide more details about it on [Dryad](provide_link_here){UPDATE LINK}.  
 
 Specifically, through this collaborative endeavor we plan to proceed with the following roadmap:
 `Preliminary Dataset + Software` $\mapsto$ `Published Software Package and Tutorial` $\mapsto$ `Preliminary Analysis of the Results` $\mapsto$ `Larger Dataset + Software Testing` $\mapsto$ `Statistical Model of Tissue Mechanical Behavior`
