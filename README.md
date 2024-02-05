@@ -114,6 +114,9 @@ pip install -e .
 ```bash
 pytest -v --cov=microbundlepillartrack --cov-report term-missing
 ```
+
+As indicated with the shared badges above, the MicroBundlePillarTrack software has been tested on $3$ operating systems, macOS, Windows, and Ubuntu with $97\%$ coverage using GitHub Actions. We note that locally, we have tested the software on macOS Montery, Windows XX, and Ubuntu XX with $100\%$ coverage. Due to issues with loading model checkpoints with torch on GitHub, we commented out $11$ testing functions in the `test_create_pillar_mask.py` file found in the `tests` folder. For completeness and to check that the code is running $100\%$ successfully, the user can uncomment these functions and rerun the command above. 
+
 6. To run the code from the terminal, simply start python (type ``python``) and then type ``from microbundlepillartrack import image_analysis as ia``. For example:
 ```bash
 (microbundle-pillar-track-env) hibakobeissi@Hibas-MacBook-Pro ~ % python
