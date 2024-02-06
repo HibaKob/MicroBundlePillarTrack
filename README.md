@@ -109,13 +109,15 @@ Note that once you have created this virtual environment you can ``activate`` an
 pip install -e .
 ```
 4. If you would like to see what packages were installed, you can type ``pip list``
-<!-- 5. Download the finetuned SAM checkpoints for pillar mask segmentation from [here](https://drive.google.com/drive/folders/1ndoDFfpvI3UX-hUGS7yxpgE2KCu497GJ?usp=share_link) and save them in the ``src/microbundlepillartrack`` folder. It is critical that the downloaded checkpoints, ``microbundle_SAM_Type1_pillars.pth`` and ``microbundle_SAM_Type2_pillars.pth`` are saved in the same folder as the python script ``create_pillar_mask.py``. We do not include these checkpoint files within this repository due to file size restrictions on GitHub.  -->
+
 5. You can test that the code is working with pytest (all tests should pass):
 ```bash
 pytest -v --cov=microbundlepillartrack --cov-report term-missing
 ```
 
-As indicated with the shared badges above, the MicroBundlePillarTrack software has been tested on 3 operating systems, macOS, Windows, and Ubuntu with 97% coverage using GitHub Actions. We note that locally, we have tested the software on macOS Montery, Windows XX, and Ubuntu XX with 100% coverage. Due to issues with loading model checkpoints with torch on GitHub, we commented out 11 testing functions in the `test_create_pillar_mask.py` file found in the `tests` folder. For completeness and to check that the code is running 100% successfully, the user can uncomment these functions and rerun the command above. 
+As indicated with the shared badges above, the MicroBundlePillarTrack software has been tested on 3 operating systems, macOS, Windows, and Ubuntu with 97% coverage using GitHub Actions. We note that locally, we have tested the software on macOS Montery, Windows 10, and Ubuntu XX with 100% coverage. Due to issues with loading model checkpoints with torch on Git LFS, we commented out 11 testing functions in the `test_create_pillar_mask.py` file found in the `tests` folder. For completeness and to check that the code is running 100% successfully, the user can uncomment these functions and rerun the command above. 
+
+In case you receive a ``_pickle.UnpicklingError`` error associated with the provided finetuned SAM checkpoints on GitHub (the ``.pth`` files), you can replace these files by downloading them from [here](https://drive.google.com/drive/folders/1ndoDFfpvI3UX-hUGS7yxpgE2KCu497GJ?usp=share_link) and saving them in the ``src/microbundlepillartrack`` folder. It is critical that the downloaded checkpoints, ``microbundle_SAM_Type1_pillars.pth`` and ``microbundle_SAM_Type2_pillars.pth`` are saved in the same folder as the python script ``create_pillar_mask.py``. 
 
 6. To run the code from the terminal, simply start python (type ``python``) and then type ``from microbundlepillartrack import image_analysis as ia``. For example:
 ```bash
