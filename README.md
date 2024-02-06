@@ -68,7 +68,7 @@ Specifically, we aim to `1)` identify scenarios where our approach fails, `2)` a
 ## Installation Instructions <a name="install"></a>
 ### Get a copy of the microbundle pillar track repository on your local machine
 
-The best way to do this is to create a GitHub account and ``clone`` the repository. However, you can also download the repository by clicking the green ``Code`` button and selecting ``Download ZIP``. Download and unzip the ``MicroBundlePillarTrack-main`` folder and place it in a convenient location on your computer.
+The best way to do this is to create a GitHub account and ``clone`` the repository. However, you can also download the repository by clicking the green ``Code`` button and selecting ``Download ZIP``. Download and unzip the ``MicroBundlePillarTrack-master`` folder and place it in a convenient location on your computer.
 
 Alternatively, you can run the following command in a ``Terminal`` session:
 ```bash
@@ -102,7 +102,7 @@ Note that once you have created this virtual environment you can ``activate`` an
 
 ### Install microbundle pillar track
 
-1. Use a ``Terminal`` session to navigate to the ``MicroBundlePillarTrack-main`` folder or ``MicroBundlePillarTrack`` folder (depending on the method you followed to download the github repository). The command ``cd`` will allow you to do this (see: [terminal cheat sheet](https://terminalcheatsheet.com/))
+1. Use a ``Terminal`` session to navigate to the ``MicroBundlePillarTrack-master`` folder or ``MicroBundlePillarTrack`` folder (depending on the method you followed to download the github repository). The command ``cd`` will allow you to do this (see: [terminal cheat sheet](https://terminalcheatsheet.com/))
 2. Type the command ``ls`` and make sure that the file ``pyproject.toml`` is in the current directory.
 3. Now, create an editable install of microbundle compute:
 ```bash
