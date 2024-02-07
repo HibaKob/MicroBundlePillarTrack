@@ -82,6 +82,12 @@ except OSError:
         traceback.print_exc(file=f)
     failed_paths.append(str(input_folder))
     pass
+except AttributeError:
+    print(traceback.format_exc())
+    with open(str(input_folder.resolve().parent)+'/Errors.txt', "a") as f:
+        traceback.print_exc(file=f)
+    failed_paths.append(str(input_folder))
+    pass
 
 if len(failed_paths) > 0:
     with open(str(input_folder.resolve().parent)+'/failed_paths.txt', "a") as f:
