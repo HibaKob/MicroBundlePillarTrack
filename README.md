@@ -71,7 +71,7 @@ Specifically, we aim to `1)` identify scenarios where our approach fails, `2)` a
 ## Installation Instructions <a name="install"></a>
 ### Get a copy of the microbundle pillar track repository on your local machine
 
-To get started with using MicroBundlePillarTrack easily, we provide a recorded installation guide and a brief tutorial in this [demo] (https://youtu.be/AigaLojbAYc). Alternatively, you can follow the steps below.
+To get started with using MicroBundlePillarTrack easily, we provide a recorded installation guide and a brief tutorial in this [demo](https://youtu.be/AigaLojbAYc). Alternatively, you can follow the steps below.
 
 The best way to do this is to create a GitHub account and ``clone`` the repository. However, you can also download the repository by clicking the green ``Code`` button and selecting ``Download ZIP``. Download and unzip the ``MicroBundlePillarTrack-master`` folder and place it in a convenient location on your computer.
 
