@@ -819,7 +819,7 @@ def visualize_pillar_tracking(folder_path: Path, length_scale: float = 1, fps: U
     color_lst_bar = ['navy','slategrey','darkred','rosybrown']
     y_label = ('Contraction', 'Relaxation')
     y_pos = np.arange(len(y_label))
-    plt.figure()
+
     fig, axs = plt.subplots(2, 1, figsize=(5,8), gridspec_kw={'height_ratios': [2.5, 1], 'hspace': .36})
     for ml in range(len(mask_file_list)): 
         pillar_velocity = load_pillar_velocity_results(folder_path,fname='pillar%i_'%(ml+1))
@@ -862,7 +862,7 @@ def visualize_pillar_tracking(folder_path: Path, length_scale: float = 1, fps: U
     color_lst_time = ['navy','darkred']
     y_label = (r't$_{80}$', r't$_{50}$')
     y_pos = np.arange(len(y_label))
-    plt.figure()
+
     fig, axs = plt.subplots(2, 1, figsize=(5,9), gridspec_kw={'height_ratios': [2.5, 1], 'hspace': .4})
     for ml in range(len(mask_file_list)): 
         # load pillar tracking results
