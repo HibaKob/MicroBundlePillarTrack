@@ -158,7 +158,7 @@ def run_dilate_mask(mask_idx: List, mask_1: np.ndarray, mask_2: np.ndarray) -> T
             print("Segmented `pillar_mask_1` has been dilated to increase its area. Examine results for pillar_1 with caution.")
         elif idx==1:
             mask_2 = dilate_mask(mask_2)
-            print("Segmented `pillar_mask_2` has been dilated to increase its area. Examine results for pillar_1 with caution.")     
+            print("Segmented `pillar_mask_2` has been dilated to increase its area. Examine results for pillar_2 with caution.")     
     return mask_1, mask_2
 
 
